@@ -11,8 +11,7 @@ Wearable AAC Smartbadges and Displays_](https://dl.acm.org/doi/10.1145/3613904.3
 (Curtis, Lau and Neate), and co-designed with people with aphasia in workshops
 run with [Aphasia Re-Connect](https://aphasiareconnect.org).
 
-Companion to [Watch Your Language AAC](https://github.com/HumphreyCurtis/Watch-Your-Language-AAC),
-which does the same job on an Apple Watch.
+Companion to [Watch Your Language AAC](https://github.com/HumphreyCurtis/Watch-Your-Language-AAC).
 
 ## What it does
 
