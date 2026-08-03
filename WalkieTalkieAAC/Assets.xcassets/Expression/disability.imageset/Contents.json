@@ -1,0 +1,15 @@
+{
+  "images": [
+    {
+      "filename": "disabled_sign.svg",
+      "idiom": "universal"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "preserves-vector-representation": true
+  }
+}
