@@ -62,6 +62,7 @@ struct SymbolSpeakView: View {
     // MARK: - The outward display
 
     private var display: some View {
+        GeometryReader { geometry in
         ZStack {
             SignagePalette.diversion.color
 
@@ -70,7 +71,9 @@ struct SymbolSpeakView: View {
                     Image(assetName)
                         .resizable()
                         .scaledToFit()
-                        .frame(maxHeight: 260)
+                        // Proportional rather than a fixed 260pt, so the
+                        // symbol grows with the screen it is shown on.
+                        .frame(maxHeight: max(geometry.size.height * 0.42, 180))
                         .padding(.horizontal, 30)
                         .transition(.scale.combined(with: .opacity))
                 } else if !recognizer.latestWord.isEmpty {
@@ -78,7 +81,9 @@ struct SymbolSpeakView: View {
                     // than an error — a blank screen mid-sentence reads as a
                     // fault, and the word is still useful.
                     Text(recognizer.latestWord)
-                        .font(.appDisplay(120))
+                        .font(.appDisplay(AppFont.displaySize(
+                            fillingWidth: geometry.size.width, factor: 0.31
+                        )))
                         .minimumScaleFactor(0.2)
                         .lineLimit(1)
                         .foregroundStyle(SignagePalette.diversion.readableForeground)
@@ -102,6 +107,8 @@ struct SymbolSpeakView: View {
             }
             .rotationEffect(.degrees(rotation))
             .animation(.easeInOut(duration: 0.2), value: recognizer.latestWord)
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .ignore)

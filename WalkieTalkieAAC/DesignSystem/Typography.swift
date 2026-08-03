@@ -115,6 +115,18 @@ extension Font {
     }
 }
 
+extension AppFont {
+    /// A display size proportional to the width it has to fill.
+    ///
+    /// Fixed point sizes do not survive the jump to iPad: a size that fills a
+    /// 393pt iPhone leaves the same word stranded in the middle of an 820pt
+    /// iPad, which defeats the point of a sign meant to be read from across a
+    /// carriage. The floor keeps the smallest iPhones sane.
+    static func displaySize(fillingWidth width: CGFloat, factor: CGFloat = 0.56) -> CGFloat {
+        max(width, 320) * factor
+    }
+}
+
 enum AppAppearance {
     /// Applies the app's navigation-bar styling. Called once at launch.
     ///

@@ -13,6 +13,7 @@
 
 import Foundation
 import Observation
+import UIKit
 
 @Observable
 final class BadgeStore {
@@ -102,6 +103,13 @@ final class BadgeStore {
     }
 
     func delete(at offsets: IndexSet) {
+        // Take the photos with them, or the directory grows forever with
+        // files nothing references.
+        for index in offsets {
+            if let name = badges[index].backgroundImageName {
+                try? FileManager.default.removeItem(at: imageURL(named: name))
+            }
+        }
         badges.remove(atOffsets: offsets)
         save()
     }
@@ -127,6 +135,52 @@ final class BadgeStore {
     func restoreDefaults() {
         badges = BadgeLibrary.defaults + BadgeLibrary.multilingualExamples
         save()
+    }
+
+    // MARK: - Background photos
+    //
+    // Photos are written as files next to Badges.json rather than base64'd
+    // into it, so the JSON stays small enough to paste into an assistant.
+
+    private var imagesDirectory: URL {
+        let url = URL.documentsDirectory.appendingPathComponent("BadgeImages", isDirectory: true)
+        try? FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        return url
+    }
+
+    func imageURL(named name: String) -> URL {
+        imagesDirectory.appendingPathComponent(name)
+    }
+
+    func image(for badge: Badge) -> UIImage? {
+        guard let name = badge.backgroundImageName else { return nil }
+        return UIImage(contentsOfFile: imageURL(named: name).path)
+    }
+
+    /// Stores a photo for a badge and returns the badge with its filename set.
+    /// Any previous photo for that badge is removed.
+    @discardableResult
+    func setImage(_ image: UIImage?, for badge: Badge) -> Badge {
+        var updated = badge
+
+        if let existing = badge.backgroundImageName {
+            try? FileManager.default.removeItem(at: imageURL(named: existing))
+            updated.backgroundImageName = nil
+        }
+
+        if let image {
+            // Re-encoded as JPEG rather than stored raw: a full-resolution
+            // HEIC per badge adds up fast on a device someone is also using
+            // for photos.
+            let name = "\(badge.id.uuidString).jpg"
+            if let data = image.jpegData(compressionQuality: 0.8) {
+                try? data.write(to: imageURL(named: name), options: .atomic)
+                updated.backgroundImageName = name
+            }
+        }
+
+        update(updated)
+        return updated
     }
 
     // MARK: - Saving

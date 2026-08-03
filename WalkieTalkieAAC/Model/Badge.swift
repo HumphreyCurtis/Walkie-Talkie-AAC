@@ -34,6 +34,14 @@ struct Badge: Identifiable, Codable, Hashable {
     /// BCP 47 tag. `nil` follows the device language.
     var languageCode: String?
 
+    /// Filename of a photo used as the badge's background, stored alongside
+    /// `Badges.json`. `nil` means the badge shows its colour.
+    ///
+    /// Co-designers used this to camouflage — one held the phone against a
+    /// striped shirt so the badge disappeared into what he was wearing. Being
+    /// able to make the device invisible matters as much as making it shout.
+    var backgroundImageName: String?
+
     init(
         id: UUID = UUID(),
         label: String,
@@ -41,7 +49,8 @@ struct Badge: Identifiable, Codable, Hashable {
         systemIcon: String = "text.bubble.fill",
         emoji: String? = nil,
         colorName: String? = nil,
-        languageCode: String? = nil
+        languageCode: String? = nil,
+        backgroundImageName: String? = nil
     ) {
         self.id = id
         self.label = label
@@ -50,6 +59,7 @@ struct Badge: Identifiable, Codable, Hashable {
         self.emoji = emoji
         self.colorName = colorName
         self.languageCode = languageCode
+        self.backgroundImageName = backgroundImageName
     }
 }
 

@@ -24,6 +24,9 @@ struct AttentionView: View {
 
     @AppStorage(SettingsKeys.facesOutward) private var facesOutward = true
     @AppStorage(SettingsKeys.wordInterval) private var wordInterval = WordPace.default
+    @Environment(\.colorScheme) private var scheme
+
+    private let store = BadgeStore.shared
 
     /// How long the escalation takes to reach full red.
     private let escalation: Double = 15
@@ -60,78 +63,133 @@ struct AttentionView: View {
     // MARK: - Before it starts
 
     private var setup: some View {
-        VStack(spacing: 20) {
-            VStack(alignment: .leading, spacing: 10) {
-                PlatformHeader(text: "Message", tint: SignagePalette.signalRed)
+        VStack(spacing: 18) {
+            ScrollView {
+                VStack(spacing: 18) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        PlatformHeader(text: "Message", tint: SignagePalette.signalRed)
 
-                TextField("Excuse me please", text: $message, axis: .vertical)
-                    .font(.appTitle3)
-                    .lineLimit(1...3)
-                    .padding(14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(SignagePalette.concrete.color.opacity(0.12))
-                    )
+                        TextField("Excuse me please", text: $message, axis: .vertical)
+                            .font(.appTitle3)
+                            .lineLimit(1...3)
+                            .padding(14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .fill(SignagePalette.concrete.color.opacity(0.12))
+                            )
+                    }
+
+                    Text("The words come one at a time, very large. The colour starts green and turns red over about fifteen seconds. Tap it to speak, or hide it at any time.")
+                        .font(.appFootnote)
+                        .foregroundStyle(SignagePalette.concrete.color)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    badgeShortcuts
+                }
+                .padding(20)
+                .signageColumn()
             }
-
-            Text("The display starts green and turns red over about fifteen seconds. Tap it to speak, or hide it at any time.")
-                .font(.appFootnote)
-                .foregroundStyle(SignagePalette.concrete.color)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Spacer()
 
             PressToTalkButton(
                 title: "Start",
                 systemIcon: "exclamationmark.triangle.fill",
                 tint: SignagePalette.signalRed
             ) {
-                rotation = facesOutward ? 180 : 0
-                startedAt = Date()
-                withAnimation(.easeInOut(duration: 0.2)) { isRunning = true }
+                start()
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+            .signageColumn()
+        }
+        .signageSurface()
+    }
+
+    /// Any saved badge can be run as an attention display.
+    ///
+    /// A badge is normally a quiet sign someone reads at their own pace; the
+    /// same words shown one at a time in escalating colour are that message
+    /// made urgent. Rather than making the wearer retype it under pressure,
+    /// one tap borrows what they already wrote.
+    private var badgeShortcuts: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            PlatformHeader(
+                text: "Or use a badge",
+                systemIcon: "rectangle.stack.fill",
+                tint: SignagePalette.signalRed
+            )
+
+            ForEach(store.badges) { badge in
+                Button {
+                    message = badge.displayText
+                    start()
+                } label: {
+                    SignageRow(
+                        title: badge.label,
+                        subtitle: badge.displayText,
+                        systemIcon: badge.systemIcon,
+                        emoji: badge.emoji,
+                        tint: BadgeColor.sign(named: badge.colorName)
+                    )
+                    .background(
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(SignagePalette.block(scheme))
+                    )
+                }
+                .buttonStyle(.plain)
             }
         }
-        .padding(20)
-        .signageColumn()
-        .signageSurface()
+    }
+
+    private func start() {
+        rotation = facesOutward ? 180 : 0
+        startedAt = Date()
+        withAnimation(.easeInOut(duration: 0.2)) { isRunning = true }
     }
 
     // MARK: - While it runs
 
     private var running: some View {
-        TimelineView(.periodic(from: startedAt, by: min(interval, 0.25))) { context in
-            let elapsed = context.date.timeIntervalSince(startedAt)
-            let urgency = min(elapsed / escalation, 1)
-            let background = escalationColor(urgency: urgency)
-            let index = max(0, Int(elapsed / interval)) % words.count
+        GeometryReader { geometry in
+            TimelineView(.periodic(from: startedAt, by: min(interval, 0.25))) { context in
+                let elapsed = context.date.timeIntervalSince(startedAt)
+                let urgency = min(elapsed / escalation, 1)
+                let background = escalationColor(urgency: urgency)
+                let index = max(0, Int(elapsed / interval)) % words.count
 
-            ZStack {
-                background.color.ignoresSafeArea()
+                ZStack {
+                    background.color.ignoresSafeArea()
 
-                Text(words[index])
-                    .font(.appDisplay(240))
-                    .minimumScaleFactor(0.1)
-                    .lineLimit(1)
-                    .foregroundStyle(background.readableForeground)
-                    .padding(.horizontal, 16)
-                    .rotationEffect(.degrees(rotation))
-                    // Once it is fully red it pulses, which reads as urgent
-                    // in peripheral vision in a way a static colour does not.
-                    // No animation on the word change itself — a crossfade
-                    // stacks two words on top of each other while they are
-                    // being read.
-                    .scaleEffect(urgency >= 1 ? pulse(elapsed: elapsed) : 1)
+                    // Sized to the screen, like the badge display, so the
+                    // word fills an iPad rather than floating in it.
+                    Text(words[index])
+                        .font(.appDisplay(AppFont.displaySize(
+                            fillingWidth: geometry.size.width, factor: 0.61
+                        )))
+                        .minimumScaleFactor(0.1)
+                        .lineLimit(1)
+                        .foregroundStyle(background.readableForeground)
+                        .padding(.horizontal, 16)
+                        .rotationEffect(.degrees(rotation))
+                        // Once it is fully red it pulses, which reads as
+                        // urgent in peripheral vision in a way a static
+                        // colour does not. No animation on the word change
+                        // itself — a crossfade stacks two words on top of
+                        // each other while they are being read.
+                        .scaleEffect(urgency >= 1 ? pulse(elapsed: elapsed) : 1)
 
-                controls(surface: background)
+                    controls(surface: background)
+                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    Speaker.shared.speak(message)
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(message)
+                .accessibilityHint("Double tap to speak")
             }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                Speaker.shared.speak(message)
-            }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(message)
-            .accessibilityHint("Double tap to speak")
         }
+        .ignoresSafeArea()
     }
 
     /// The controls take their colours from the live escalation colour, so
