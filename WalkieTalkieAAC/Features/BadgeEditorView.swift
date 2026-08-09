@@ -58,7 +58,7 @@ struct BadgeEditorView: View {
             } header: {
                 PlatformHeader(text: "Message", tint: tint)
             } footer: {
-                Text("Shown one word at a time, and spoken if you tap the badge.")
+                Text("Shown in large type, and spoken if you tap the badge.")
                     .font(.appFootnote)
             }
 

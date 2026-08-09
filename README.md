@@ -3,7 +3,7 @@
 Turn an iPhone into a sign.
 
 Wear it on a lanyard facing outward and show a message to the person you are
-talking to — one word at a time, big enough to read at a glance. It is a
+talking to in type that is big enough to read at a glance. It is a
 safety net for when talking breaks down, not a replacement for your voice.
 
 Built from the CHI 2024 paper [_Breaking Badge: Augmenting Communication with
@@ -17,7 +17,7 @@ Companion to [Watch Your Language AAC](https://github.com/HumphreyCurtis/Watch-Y
 
 | | |
 |---|---|
-| **Badges** | Your messages, shown outward one word at a time. Tap to speak. |
+| **Badges** | Your messages, shown outward in large type. Tap to speak. |
 | **Attention** | A display that escalates green → amber → red over fifteen seconds, for when you need to be noticed. |
 | **Symbol Speak** | Live speech recognition, showing the picture for the last word said. |
 | **Photo to Speech** | Point the camera at something you cannot find the word for. |

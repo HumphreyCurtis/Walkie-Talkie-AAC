@@ -106,8 +106,9 @@ final class BadgeStore {
         // Take the photos with them, or the directory grows forever with
         // files nothing references.
         for index in offsets {
-            if let name = badges[index].backgroundImageName {
-                try? FileManager.default.removeItem(at: imageURL(named: name))
+            if let name = badges[index].backgroundImageName,
+               let url = imageURL(named: name) {
+                try? FileManager.default.removeItem(at: url)
             }
         }
         badges.remove(atOffsets: offsets)
@@ -127,14 +128,25 @@ final class BadgeStore {
     @discardableResult
     func replaceAll(_ newBadges: [Badge], allowingEmpty: Bool = false) -> Bool {
         guard allowingEmpty || !newBadges.isEmpty else { return false }
+
+        // A whole-library edit can remove badges without going through
+        // `delete(at:)`. Clean up only photos that are no longer referenced.
+        let retainedImages = Set(newBadges.compactMap(\.backgroundImageName))
+        let removedImages = Set(badges.compactMap(\.backgroundImageName))
+            .subtracting(retainedImages)
+        for name in removedImages {
+            if let url = imageURL(named: name) {
+                try? FileManager.default.removeItem(at: url)
+            }
+        }
+
         badges = newBadges
         save()
         return true
     }
 
     func restoreDefaults() {
-        badges = BadgeLibrary.defaults + BadgeLibrary.multilingualExamples
-        save()
+        _ = replaceAll(BadgeLibrary.defaults + BadgeLibrary.multilingualExamples)
     }
 
     // MARK: - Background photos
@@ -148,13 +160,28 @@ final class BadgeStore {
         return url
     }
 
-    func imageURL(named name: String) -> URL {
-        imagesDirectory.appendingPathComponent(name)
+    /// Resolves only plain filenames inside `BadgeImages`.
+    ///
+    /// `backgroundImageName` is Codable and can therefore come from pasted
+    /// JSON. Rejecting path components here prevents a malformed value such
+    /// as `../Badges.json` from ever being read or deleted outside the image
+    /// directory.
+    private func imageURL(named name: String) -> URL? {
+        let filename = (name as NSString).lastPathComponent
+        guard !filename.isEmpty,
+              filename != ".",
+              filename != "..",
+              filename == name
+        else { return nil }
+
+        return imagesDirectory.appendingPathComponent(filename, isDirectory: false)
     }
 
     func image(for badge: Badge) -> UIImage? {
-        guard let name = badge.backgroundImageName else { return nil }
-        return UIImage(contentsOfFile: imageURL(named: name).path)
+        guard let name = badge.backgroundImageName,
+              let url = imageURL(named: name)
+        else { return nil }
+        return UIImage(contentsOfFile: url.path)
     }
 
     /// Stores a photo for a badge and returns the badge with its filename set.
@@ -164,7 +191,9 @@ final class BadgeStore {
         var updated = badge
 
         if let existing = badge.backgroundImageName {
-            try? FileManager.default.removeItem(at: imageURL(named: existing))
+            if let url = imageURL(named: existing) {
+                try? FileManager.default.removeItem(at: url)
+            }
             updated.backgroundImageName = nil
         }
 
@@ -173,8 +202,9 @@ final class BadgeStore {
             // HEIC per badge adds up fast on a device someone is also using
             // for photos.
             let name = "\(badge.id.uuidString).jpg"
-            if let data = image.jpegData(compressionQuality: 0.8) {
-                try? data.write(to: imageURL(named: name), options: .atomic)
+            if let data = image.jpegData(compressionQuality: 0.8),
+               let url = imageURL(named: name) {
+                try? data.write(to: url, options: .atomic)
                 updated.backgroundImageName = name
             }
         }

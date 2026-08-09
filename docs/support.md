@@ -5,7 +5,7 @@
 1. **Wear the phone facing outward.** A neck lanyard, a cross-body strap, a
    belt clip, or a clear cross-body bag. The screen faces the person you are
    talking to.
-2. **Open Badges and tap one.** It fills the screen, one word at a time, the
+2. **Open Badges and tap one.** It fills the screen in large type, the
    right way up for them.
 3. **Tap the screen to speak it**, if you want to. Nothing speaks on its own.
 4. **Make it yours.** The `+` button writes a new badge. Or use "Write badges
@@ -18,8 +18,8 @@ That is deliberate — badges face the person opposite. Press the rotate button
 on the badge to flip it, or turn it off for good in Settings → "Badges face
 outward".
 
-**The words change too fast, or too slowly.**
-Settings → Badges → Word speed.
+**The words on the Attention screen change too fast, or too slowly.**
+Settings → Badges → Attention word speed.
 
 **The voice is too fast, or the wrong one.**
 Settings → Voice. There is a "Test the voice" button.

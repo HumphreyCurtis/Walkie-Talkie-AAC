@@ -23,7 +23,7 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
-                Text("Walkie Talkie turns your phone into a sign. Wear it on a lanyard, facing outward, and show a message to the person you are talking to — one word at a time, big enough to read at a glance.")
+                Text("Walkie Talkie turns your phone into a sign. Wear it on a lanyard, facing outward, and show a message to the person you are talking to in type that is big enough to read at a glance.")
                     .font(.appBody)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.vertical, 10)

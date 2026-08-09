@@ -58,8 +58,8 @@ enum BadgeTransfer {
         return """
         You are helping someone set up Walkie Talkie AAC, an iPhone app that \
         turns a phone worn on a lanyard into an outward-facing sign. Each \
-        "badge" is one message shown to the person they are talking to, one \
-        word at a time in very large type, and optionally spoken aloud.
+        "badge" is one message shown to the person they are talking to in \
+        large type, and optionally spoken aloud.
 
         Many users have aphasia after a stroke. Write in short, plain, \
         respectful sentences. Say please and thank you. Write from the \
@@ -266,8 +266,11 @@ enum BadgeTransfer {
 
             if let matchIndex {
                 // Keep the existing id so the update lands on the same badge
-                // even when the assistant dropped it.
+                // even when the assistant dropped it. The AI prompt does not
+                // expose local photo filenames, so an edit must also retain
+                // the badge's existing background photo.
                 badge.id = result[matchIndex].id
+                badge.backgroundImageName = result[matchIndex].backgroundImageName
                 if result[matchIndex] == badge {
                     changes.append(Change(badge: badge, kind: .unchanged))
                 } else {

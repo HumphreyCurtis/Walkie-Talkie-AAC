@@ -90,7 +90,7 @@ struct SettingsView: View {
                 // the binding keeps both sliders on this page pointing the
                 // same way — right is faster.
                 slider(
-                    title: "Word speed",
+                    title: "Attention word speed",
                     value: Binding(
                         get: { WordPace.slowest + WordPace.fastest - settings.wordInterval },
                         set: { settings.wordInterval = WordPace.slowest + WordPace.fastest - $0 }
@@ -100,7 +100,7 @@ struct SettingsView: View {
             } header: {
                 PlatformHeader(text: "Badges", systemIcon: "textformat.size", tint: tint)
             } footer: {
-                Text("How long each word stays on screen before the next one.")
+                Text("How long each word stays on the Attention screen before the next one.")
                     .signageFooter()
             }
         }
