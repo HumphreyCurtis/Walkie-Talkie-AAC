@@ -5,18 +5,18 @@
 //  Photo to Speech: point the camera at something you cannot find the word
 //  for, and the app offers a word.
 //
-//  Classification runs entirely on-device with a bundled MobileNetV2. No
-//  photo leaves the phone, and nothing is uploaded.
+//  Classification runs entirely on-device with Vision's built-in
+//  VNClassifyImageRequest — no bundled model file, no network request.
+//  Apple improves the classifier across OS updates for free.
 //
-//  The model is a general-purpose one and it is wrong often enough to matter.
-//  Participants noticed both the errors and their accent — "coffee mug"
-//  rather than "tea mug". So the interface shows the confidence, offers
+//  The classifier is a general-purpose one and it is wrong often enough to
+//  matter. Participants noticed both the errors and their accent — "coffee
+//  mug" rather than "tea mug". So the interface shows the confidence, offers
 //  alternatives rather than a single answer, and never speaks a guess without
 //  being asked. The word is a prompt for the wearer, not an announcement.
 //
 
 import CoreImage
-import CoreML
 import SwiftUI
 import Vision
 
@@ -43,21 +43,7 @@ final class ImageClassifier: ObservableObject {
     @Published private(set) var isClassifying = false
     @Published var errorMessage: String?
 
-    /// Loaded once and reused. Rebuilding the Vision model per photo costs
-    /// a noticeable pause on older devices, and the study ran on an iPhone SE.
-    private lazy var model: VNCoreMLModel? = {
-        let configuration = MLModelConfiguration()
-        guard let wrapped = try? MobileNetV2(configuration: configuration),
-              let model = try? VNCoreMLModel(for: wrapped.model)
-        else { return nil }
-        return model
-    }()
-
     func classify(_ image: UIImage) {
-        guard let model else {
-            errorMessage = "The word suggester could not start."
-            return
-        }
         guard let ciImage = CIImage(image: image) else {
             errorMessage = "That photo could not be read."
             return
@@ -70,15 +56,14 @@ final class ImageClassifier: ObservableObject {
         // Off the main actor: Vision on a full-resolution photo blocks for
         // long enough to drop frames otherwise.
         Task.detached(priority: .userInitiated) { [weak self] in
-            let request = VNCoreMLRequest(model: model)
-            request.imageCropAndScaleOption = .centerCrop
+            let request = VNClassifyImageRequest()
 
             let orientation = CGImagePropertyOrientation(image.imageOrientation)
             let handler = VNImageRequestHandler(ciImage: ciImage, orientation: orientation)
 
             do {
                 try handler.perform([request])
-                let observations = (request.results as? [VNClassificationObservation]) ?? []
+                let observations = request.results ?? []
                 let top = observations.prefix(3).map {
                     Classification(label: $0.identifier, confidence: $0.confidence)
                 }
