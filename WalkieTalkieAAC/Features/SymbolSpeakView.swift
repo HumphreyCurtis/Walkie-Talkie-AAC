@@ -130,7 +130,7 @@ struct SymbolSpeakView: View {
                     VStack(spacing: 12) {
                         Image(systemName: "mic.slash.fill")
                             .font(.system(size: 46, weight: .bold))
-                        Text("Press listen, then talk")
+                        Text("Tap Listen, then speak")
                             .font(.appTitle3)
                     }
                     .foregroundStyle(SignagePalette.diversion.readableForeground.opacity(0.7))

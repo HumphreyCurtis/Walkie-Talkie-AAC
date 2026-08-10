@@ -92,7 +92,7 @@ struct PhotoToSpeechView: View {
                     VStack(spacing: 12) {
                         Image(systemName: "camera.viewfinder")
                             .font(.system(size: 42, weight: .bold))
-                        Text("Take a photo of the thing you mean")
+                        Text("Take a photo of an everyday object")
                             .font(.appCallout)
                             .multilineTextAlignment(.center)
                     }
