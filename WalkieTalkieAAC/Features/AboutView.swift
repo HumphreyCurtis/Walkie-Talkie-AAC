@@ -226,7 +226,7 @@ struct AboutView: View {
                 .buttonStyle(.plain)
                 .signageRowStyle()
             } footer: {
-                Text("Mulberry Symbols v3.6.0. Over 500 curated picture symbols for communication.")
+                Text("Mulberry Symbols v3.6.0. We curate a focused set of around 540 picture symbols — everyday words someone with aphasia or autism is most likely to need in a conversation: feelings, body, food, drink, health, places, actions and common objects. The full archive has over 3,400 symbols; the curated set keeps Symbol Speak fast and the Symbol Library easy to browse.")
                     .signageFooter()
             }
         }

@@ -10,6 +10,7 @@ afternoon,18,afternoon,afternoon,Descriptive Time
 against,21,against,against,Descriptive Position
 ahead,22,ahead,ahead,Descriptive Position
 almond,34,almond,almond,Food Nuts
+ambulance,35,ambulance,ambulance,Transport Road
 angel,36,angel,angel,Religion Person
 answer,40,answer,answer,Number Activity
 ant,41,ant,ant,Animal Spiders and Insects
@@ -27,15 +28,19 @@ away,76,away,away,Descriptive Direction
 baby,79,baby,baby,People Descriptive
 backwards,87,backwards,backwards,Descriptive Direction
 bad,89,bad,bad,Descriptive State
+badminton,92,badminton,badminton,Sport
+bagel,94,bagel,bagel,Food Breads and baking
 bake,96,"bake_,_to",bake,Food Kitchen actions
 ball,105,ball,ball,Leisure Toys
 bank,111,bank,bank,Money
 bap,114,bap,bap,Food Breads and baking
+basketball,125,basketball,basketball,Sport
 bat,128,bat,bat,Animal Mammal
 bath,129,bath,bath,Building Contents
 bathe,132,"bathe_,_to",bathe,Healthcare Grooming activities
 beach,137,beach,beach,Holiday and travel
 beak,141,beak,beak,Animal Features
+bed,0,bed_time,bed,Descriptive Time
 beef,152,beef,beef,Food Meat
 beer,154,beer,beer,Drink Type
 before,158,before,before,Descriptive Position
@@ -80,6 +85,7 @@ cafe,324,cafe,cafe,Food Feeding and eating
 cage,326,cage,cage,Animal Habitat
 cake,327,cake,cake,Food Breads and baking
 calendar,337,calendar,calendar,Work and School Timetable
+call,0,"call_out_,_to",call,Verb
 camera,341,camera,camera,Electrical Media
 canada,1183,flag_Canada,canada,Country Flags
 canoe,350,canoe,canoe,Transport Water
@@ -110,6 +116,7 @@ clock,527,clock,clock,Electrical General
 closed,530,closed,closed,Descriptive Position
 cloudy,542,cloudy,cloudy,Environment Weather
 coffee,550,coffee,coffee,Drink Type
+cold,0,drink_cold,cold,Drink Description
 comb,560,comb,comb,Healthcare Grooming items
 comet,563,comet,comet,Science Astronomy
 cook,595,"cook_,_to",cook,Food Kitchen actions
@@ -120,6 +127,7 @@ counters,615,counters,counters,Money
 cow,806,cow,cow,Animal Mammal
 crab,808,crab,crab,Animal Crustacean and Molluscs
 cream,816,cream,cream,Food Dairy
+cricket,820,cricket,cricket,Sport
 crooked,830,crooked,crooked,Descriptive Shape
 cross,831,cross,cross,Religion General
 cruiser,836,cruiser,cruiser,Transport Water
@@ -139,6 +147,7 @@ disability,0,disabled_sign,disability,Communication Signs
 disabled,0,disabled_sign,disabled,Communication Signs
 dishwasher,919,dishwasher,dishwasher,Building Equipment and devices
 divide,922,divide,divide,Number Activity
+doctor,0,doctor_1a,doctor,People Profession
 dog,927,dog,dog,Animal Mammal
 doll,936,doll,doll,Leisure Toys
 dolphin,937,dolphin,dolphin,Animal Fish and Marine mammals
@@ -146,6 +155,7 @@ door,939,door,door,Building Structure
 dove,943,dove,dove,Animal Birds
 down,944,down,down,Descriptive Direction
 drama,948,drama,drama,Work and School Subjects
+drink,959,drink,drink,Drink Type
 drinks,971,drinks,drinks,Drink Description
 drum,973,drum,drum,Music Instrument
 dry,975,dry,dry,Descriptive State
@@ -192,6 +202,7 @@ floor,1403,floor,floor,Building Structure
 flute,1412,flute,flute,Music Instrument
 fly,1413,fly,fly,Animal Spiders and Insects
 food,1415,food,food,Food Breads and baking
+football,1422,football,football,Sport Accessories
 forward,1473,forward,forward,Descriptive Direction
 forwards,1474,forwards,forwards,Descriptive Direction
 france,1217,flag_France,france,Country Flags
@@ -202,6 +213,7 @@ future,1501,future,future,Descriptive Time
 fuzzy,1502,fuzzy,fuzzy,Descriptive State
 garage,1505,garage,garage,Building Residential
 germany,1221,flag_Germany,germany,Country Flags
+glass,1520,glass,glass,Science
 globe,1524,globe,globe,Work and School Education
 glue,1526,glue,glue,Work and School Stationery
 gnat,1528,gnat,gnat,Animal Spiders and Insects
@@ -218,7 +230,9 @@ half,1596,half,half,Descriptive Quantity
 halloween,1597,Halloween,halloween,Celebration Event
 ham,1598,ham,ham,Food Meat
 hangar,1613,hangar,hangar,Transport Air
+happy,0,happy_man,happy,People Feelings
 hard,1617,hard,hard,Descriptive State
+headache,1633,headache,headache,Healthcare Medical conditions
 headmouse,1637,headmouse,headmouse,Communication Aid
 heavy,1647,heavy,heavy,Descriptive Quantity
 helicopter,1653,helicopter,helicopter,Transport Air
@@ -233,12 +247,14 @@ hoe,1668,hoe,hoe,Tools Garden
 hoist,1669,hoist,hoist,Healthcare Medical items
 holdall,1670,holdall,holdall,Holiday and travel
 hollow,1673,hollow,hollow,Descriptive Shape
+home,0,house,home,Building Residential
 honey,1676,honey,honey,Food Ingredients
 hoover,1680,"hoover_,_to",hoover,Building Household tasks
 hose,1683,hose,hose,Tools Garden
 hot,1684,hot,hot,Descriptive Quantity
 house,1690,house,house,Building Residential
 how,1692,how,how,Question
+hungry,1695,hungry,hungry,Food Feeding and eating
 in,1703,in,in,Descriptive Position
 inbox,1705,inbox,inbox,Computer Icon
 india,1238,flag_India,india,Country Flags
@@ -246,6 +262,7 @@ intellikeys,1712,intellikeys,intellikeys,Communication Aid
 iphone,1715,iPhone,iphone,Electrical Phone
 ipod,1716,iPod,ipod,Electrical Media
 ireland,1242,flag_Ireland,ireland,Country Flags
+iron,1717,iron,iron,Building Contents
 italy,1245,flag_Italy,italy,Country Flags
 itch,1727,itch,itch,Healthcare Medical conditions
 ivy,1728,ivy,ivy,Plants and Trees
@@ -282,6 +299,7 @@ log,1851,log,log,Plants and Trees
 long,1853,long,long,Descriptive Quantity
 lost,1859,lost,lost,People Descriptive
 loud,1862,loud,loud,Descriptive State
+love,0,heart_shape,love,People Feelings
 lowest,1864,lowest,lowest,Descriptive Position
 lucky,1865,lucky,lucky,Descriptive State
 lump,1866,lump,lump,Healthcare Medical conditions
@@ -292,6 +310,7 @@ mary,1896,Mary,mary,Religion Person
 maths,1905,maths,maths,Work and School Subjects
 meat,1914,meat,meat,Food Meat
 medal,1916,medal,medal,Sport Accessories
+medicine,1917,medicine,medicine,Healthcare Medical items
 mend,1923,mend,mend,Descriptive State
 menu,1925,menu,menu,Food Meals and snacks
 mexico,1276,flag_Mexico,mexico,Country Flags
@@ -318,10 +337,12 @@ newspaper,2027,newspaper,newspaper,Work and School Education
 next,2032,next,next,Descriptive Position
 nigeria,1294,flag_Nigeria,nigeria,Country Flags
 night,2035,night,night,Descriptive Time
+no,0,cross,no,Descriptive State
 noisy,2043,noisy,noisy,Descriptive State
 noodles,2046,noodles,noodles,Food Pastas and rice
 north,2047,north,north,Descriptive Direction
 now,2054,now,now,Descriptive Time
+nurse,0,nurse_1a,nurse,People Profession
 nuts,2059,nuts,nuts,Food Nuts
 octagon,2067,octagon,octagon,Descriptive Shape
 off,2068,off,off,Descriptive Position
@@ -393,12 +414,14 @@ rosette,2422,rosette,rosette,Sport Accessories
 rug,2426,rug,rug,Building Contents
 run,2428,"run_,_to",run,Sport
 sack,2431,sack,sack,Celebration Item
+sad,0,sad_man,sad,People Feelings
 saddle,2434,saddle,saddle,Animal Activity Grooming
 salad,2440,salad,salad,Food Vegetables and salad
 salty,2446,salty,salty,Food Feeding and eating
 same,2447,same,same,Descriptive Quantity
 save,2473,save,save,Computer Icon
 saw,2474,saw,saw,Tools Workshop
+scared,0,afraid_man,scared,People Feelings
 school,2483,school,school,Building School
 scotland,1327,flag_Scotland,scotland,Country Flags
 seal,2498,seal,seal,Animal Fish and Marine mammals
@@ -444,6 +467,7 @@ starfish,2679,starfish,starfish,Animal Other Invertebrates
 sticky,2696,sticky,sticky,Descriptive State
 stock,2703,stock,stock,Food Ingredients
 stool,2709,stool,stool,Building Furniture
+stop,0,cross_palm,stop,Communication Signs
 straight,2710,straight,straight,Descriptive Shape
 striped,2716,striped,striped,Descriptive State
 stroke,2717,"stroke_,_to",stroke,Animal Activity Grooming
@@ -460,9 +484,12 @@ tap,2779,tap,tap,Healthcare Grooming items
 tart,2782,tart,tart,Food Sweets and desserts
 tea,2795,tea,tea,Drink Type
 ten,2813,ten,ten,Number
+tennis,2814,tennis,tennis,Sport
 test,2816,test,test,Work and School Education
 thanks,0,happy_man,thanks,People Feelings
 thick,2823,thick,thick,Descriptive Quantity
+thin,2825,thin,thin,People Descriptive
+thirsty,2827,thirsty,thirsty,Food Feeding and eating
 through,2838,through,through,Descriptive Direction
 tie,2843,tie,tie,Clothes General
 time,0,clock,time,Electrical General
@@ -472,6 +499,7 @@ today,2868,today,today,Descriptive Time
 toilet,2870,toilet,toilet,Healthcare Grooming items
 toilets,2873,toilets,toilets,Communication Signs
 tomorrow,2879,tomorrow,tomorrow,Descriptive Time
+toothache,2883,toothache,toothache,Healthcare Medical conditions
 top,2887,top,top,Descriptive Position
 topsoil,2889,topsoil,topsoil,Science Eco
 torch,2890,torch,torch,Electrical General
@@ -487,10 +515,12 @@ untie,2960,"untie_,_to",untie,Healthcare Grooming activities
 up,2961,up,up,Descriptive Direction
 van,2972,van,van,Transport Road
 vinegar,2984,vinegar,vinegar,Food Ingredients
+volleyball,2989,volleyball,volleyball,Sport
 wales,1389,flag_Wales,wales,Country Flags
 wall,3002,wall,wall,Building Structure
 walrus,3005,walrus,walrus,Animal Fish and Marine mammals
 watch,3021,watch,watch,Clothes Jewellery
+water,3022,water,water,Drink Type
 wavy,3031,wavy,wavy,Descriptive Shape
 webcam,3035,webcam,webcam,Electrical Computer
 week,3037,week,week,Descriptive Time
@@ -512,6 +542,7 @@ work,3087,"work_,_to",work,Tools Actions
 worksheet,3089,worksheet,worksheet,Work and School Education
 wrap,3093,"wrap_,_to",wrap,Celebration Event
 xray,3101,xray,xray,Healthcare Medical items
+yes,0,correct,yes,Descriptive State
 yesterday,3106,yesterday,yesterday,Descriptive Time
 yogurt,3107,yogurt,yogurt,Food Dairy
 zip,3119,zip,zip,Clothes Accessories
