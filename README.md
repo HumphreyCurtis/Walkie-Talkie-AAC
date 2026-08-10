@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="WalkieTalkieAAC/Assets.xcassets/AppIcon.appiconset/256.png" width="112" alt="Walkie Talkie AAC app icon">
+  <img src="docs/images/AppIcon.png" width="112" alt="Walkie Talkie AAC app icon">
 </p>
 
 <h1 align="center">Walkie Talkie AAC</h1>
@@ -16,6 +16,12 @@
 Built from the CHI 2024 paper [_Breaking Badge_](https://dl.acm.org/doi/10.1145/3613904.3642327) (Curtis, Lau and Neate), co-designed with people with aphasia in workshops run with [Aphasia Re-Connect](https://aphasiareconnect.org).
 
 Companion to [Watch Your Language AAC](https://github.com/HumphreyCurtis/Watch-Your-Language-AAC).
+
+<p align="center">
+  <img src="docs/images/badges.png" width="270" alt="Badges screen">
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/images/seat-request-badge.png" width="270" alt="Seat request badge display">
+</p>
 
 ## What it does
 
