@@ -240,7 +240,13 @@ struct BadgeEditorView: View {
                 .foregroundStyle(SignagePalette.concrete.color)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
+                LazyHGrid(
+                    rows: [
+                        GridItem(.fixed(46), spacing: 10),
+                        GridItem(.fixed(46), spacing: 10),
+                    ],
+                    spacing: 10
+                ) {
                     ForEach(BadgeTransfer.suggestedIcons, id: \.self) { name in
                         Button {
                             systemIcon = name
@@ -265,6 +271,7 @@ struct BadgeEditorView: View {
                 }
                 .padding(.horizontal, 1)
             }
+            .frame(height: 102)
         }
         .padding(.vertical, 4)
     }

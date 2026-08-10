@@ -23,6 +23,64 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
+                Link(destination: AppLinks.researchPaper) {
+                    SignageRow(
+                        title: "Read the research",
+                        subtitle: "Breaking Badge, CHI 2024",
+                        systemIcon: "doc.text.fill",
+                        tint: tint
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+
+                Link(destination: AppLinks.sisterApp) {
+                    SignageRow(
+                        title: "Watch Your Language AAC",
+                        subtitle: "The companion app, for Apple Watch",
+                        systemIcon: "applewatch",
+                        tint: tint
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+            } header: {
+                PlatformHeader(text: "Research", systemIcon: "book.closed.fill", tint: tint)
+            } footer: {
+                Text("Designed with and by people with aphasia, in workshops run with Aphasia Re-Connect.")
+                    .signageFooter()
+            }
+
+            Section {
+                Link(destination: AppLinks.donate) {
+                    SignageRow(
+                        title: "Donate to Aphasia Re-Connect",
+                        subtitle: "The charity this was designed with",
+                        systemIcon: "heart.circle.fill",
+                        tint: SignagePalette.signalRed
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+
+                Link(destination: AppLinks.sponsor) {
+                    SignageRow(
+                        title: "Sponsor development",
+                        subtitle: "Help keep the app going",
+                        systemIcon: "heart.fill",
+                        tint: SignagePalette.diversion
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+            } header: {
+                PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
+            } footer: {
+                Text("The app is free and always will be. Aphasia Re-Connect is UK registered charity \(AppLinks.charityNumber).")
+                    .signageFooter()
+            }
+
+            Section {
                 Text("Walkie Talkie turns your phone into a sign. Show a message to the person you are talking to in type that is big enough to read at a glance, whether speech is difficult or you use different languages.")
                     .font(.appBody)
                     .fixedSize(horizontal: false, vertical: true)
@@ -113,64 +171,6 @@ struct AboutView: View {
                     systemIcon: "arrow.up.forward.app",
                     tint: SignagePalette.routeGreen
                 )
-            }
-
-            Section {
-                Link(destination: AppLinks.researchPaper) {
-                    SignageRow(
-                        title: "Read the research",
-                        subtitle: "Breaking Badge, CHI 2024",
-                        systemIcon: "doc.text.fill",
-                        tint: tint
-                    )
-                }
-                .buttonStyle(.plain)
-                .signageRowStyle()
-
-                Link(destination: AppLinks.sisterApp) {
-                    SignageRow(
-                        title: "Watch Your Language AAC",
-                        subtitle: "The companion app, for Apple Watch",
-                        systemIcon: "applewatch",
-                        tint: tint
-                    )
-                }
-                .buttonStyle(.plain)
-                .signageRowStyle()
-            } header: {
-                PlatformHeader(text: "Where it came from", systemIcon: "book.closed.fill", tint: tint)
-            } footer: {
-                Text("Designed with and by people with aphasia, in workshops run with Aphasia Re-Connect.")
-                    .signageFooter()
-            }
-
-            Section {
-                Link(destination: AppLinks.donate) {
-                    SignageRow(
-                        title: "Donate to Aphasia Re-Connect",
-                        subtitle: "The charity this was designed with",
-                        systemIcon: "heart.circle.fill",
-                        tint: SignagePalette.signalRed
-                    )
-                }
-                .buttonStyle(.plain)
-                .signageRowStyle()
-
-                Link(destination: AppLinks.sponsor) {
-                    SignageRow(
-                        title: "Sponsor development",
-                        subtitle: "Help keep the app going",
-                        systemIcon: "heart.fill",
-                        tint: SignagePalette.diversion
-                    )
-                }
-                .buttonStyle(.plain)
-                .signageRowStyle()
-            } header: {
-                PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
-            } footer: {
-                Text("The app is free and always will be. Aphasia Re-Connect is UK registered charity \(AppLinks.charityNumber).")
-                    .signageFooter()
             }
 
             Section {

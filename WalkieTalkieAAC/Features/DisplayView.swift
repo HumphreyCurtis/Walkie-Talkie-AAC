@@ -1,4 +1,3 @@
-import PhotosUI
 import SwiftUI
 import UIKit
 
@@ -9,8 +8,6 @@ struct DisplayView: View {
     @State private var rotation: Double = 0
     @State private var isBlackedOut = false
     @State private var backgroundImage: UIImage?
-    @State private var showingCamera = false
-    @State private var pickerItem: PhotosPickerItem?
     @State private var sequenceStartedAt = Date()
 
     @Environment(\.dismiss) private var dismiss
@@ -58,23 +55,6 @@ struct DisplayView: View {
             UIApplication.shared.isIdleTimerDisabled = false
             Speaker.shared.stop()
         }
-        .fullScreenCover(isPresented: $showingCamera) {
-            CameraPicker(image: Binding(
-                get: { nil },
-                set: { image in if let image { apply(photo: image) } }
-            ))
-            .ignoresSafeArea()
-        }
-        .onChange(of: pickerItem) { _, item in
-            guard let item else { return }
-            Task {
-                if let data = try? await item.loadTransferable(type: Data.self),
-                   let image = UIImage(data: data) {
-                    apply(photo: image)
-                }
-                pickerItem = nil
-            }
-        }
     }
 
     @ViewBuilder
@@ -101,24 +81,33 @@ struct DisplayView: View {
 
     private var sign: some View {
         GeometryReader { geometry in
+            // The controls occupy the final 96 points of the display. The
+            // message is never allowed into that area, including on short
+            // landscape screens.
+            let topInset: CGFloat = 16
+            let controlsInset: CGFloat = 96
+            let contentSize = CGSize(
+                width: max(80, geometry.size.width - 40),
+                height: max(44, geometry.size.height - topInset - controlsInset)
+            )
+
             Group {
                 if current.displayMode == .wordByWord {
                     TimelineView(.periodic(from: sequenceStartedAt, by: min(interval, 0.25))) { context in
                         wordLayout(
                             word: word(at: context.date),
-                            size: CGSize(width: geometry.size.width - 48, height: geometry.size.height * 0.7)
+                            size: contentSize
                         )
                     }
                 } else {
-                    wholeMessageLayout(
-                        size: CGSize(width: geometry.size.width - 48, height: geometry.size.height * 0.7)
-                    )
+                    wholeMessageLayout(size: contentSize)
                 }
             }
             .foregroundStyle(foreground)
             .shadow(color: .black.opacity(backgroundImage == nil ? 0 : 0.55), radius: 8)
-            .frame(width: geometry.size.width - 48, height: geometry.size.height * 0.7)
-            .position(x: geometry.size.width / 2, y: geometry.size.height * 0.39)
+            .frame(width: contentSize.width, height: contentSize.height)
+            .clipped()
+            .position(x: geometry.size.width / 2, y: topInset + contentSize.height / 2)
             .rotationEffect(.degrees(rotation))
         }
         .accessibilityElement(children: .ignore)
@@ -127,15 +116,10 @@ struct DisplayView: View {
     }
 
     private func wholeMessageLayout(size: CGSize) -> some View {
-        let isShort = words.count <= 5
-            && current.displayText.count <= 38
-            && size.width > size.height * 0.9
-        let symbolSize = min(size.width * (isShort ? 0.22 : 0.17), size.height * 0.22)
-        let spacing: CGFloat = 18
-        let textArea = CGSize(
-            width: isShort ? max(80, size.width - symbolSize - spacing) : size.width,
-            height: isShort ? size.height : max(80, size.height - symbolSize - spacing)
-        )
+        let spacing = min(12, max(6, size.height * 0.025))
+        let symbolSize = min(size.width * 0.18, max(38, min(64, size.height * 0.16)))
+        let textHeight = max(24, size.height - symbolSize - spacing)
+        let textArea = CGSize(width: size.width - 12, height: textHeight)
         let fontSize = fittedSize(
             for: current.displayText,
             in: textArea,
@@ -143,51 +127,55 @@ struct DisplayView: View {
             scale: current.textScale
         )
 
-        return Group {
-            if isShort {
-                HStack(spacing: spacing) {
-                    if isFacingOutward {
-                        displayText(current.displayText, size: fontSize, singleLine: false)
-                        badgeSymbol(size: symbolSize)
-                    } else {
-                        badgeSymbol(size: symbolSize)
-                        displayText(current.displayText, size: fontSize, singleLine: false)
-                    }
-                }
+        return VStack(spacing: spacing) {
+            // Keep the symbol in the lower part of the physical screen even
+            // when the message itself is rotated to face away from the user.
+            if isFacingOutward {
+                badgeSymbol(size: symbolSize)
+                    .frame(height: symbolSize)
+                    .frame(maxWidth: .infinity)
+                displayText(current.displayText, size: fontSize, singleLine: false)
+                    .frame(height: textHeight, alignment: .top)
             } else {
-                VStack(spacing: spacing) {
-                    if isFacingOutward {
-                        displayText(current.displayText, size: fontSize, singleLine: false)
-                        badgeSymbol(size: symbolSize)
-                    } else {
-                        badgeSymbol(size: symbolSize)
-                        displayText(current.displayText, size: fontSize, singleLine: false)
-                    }
-                }
+                displayText(current.displayText, size: fontSize, singleLine: false)
+                    .frame(height: textHeight, alignment: .bottom)
+                badgeSymbol(size: symbolSize)
+                    .frame(height: symbolSize)
+                    .frame(maxWidth: .infinity)
             }
         }
+        .frame(width: size.width, height: size.height)
     }
 
     private func wordLayout(word: String, size: CGSize) -> some View {
-        let symbolSize = min(size.width * 0.18, size.height * 0.18)
-        let textArea = CGSize(width: size.width, height: size.height - symbolSize - 14)
+        let spacing = min(12, max(6, size.height * 0.025))
+        let symbolSize = min(size.width * 0.18, max(38, min(64, size.height * 0.16)))
+        let textHeight = max(24, size.height - symbolSize - spacing)
+        let textArea = CGSize(width: size.width - 12, height: textHeight)
         // Size every word from the most demanding word so the display does
         // not jump larger and smaller as the sentence advances.
         let fontSize = words.map {
             fittedSize(for: $0, in: textArea, singleLine: true, scale: current.textScale)
         }.min() ?? 48
 
-        return VStack(spacing: 14) {
+        return VStack(spacing: spacing) {
             if isFacingOutward {
-                displayText(word, size: fontSize, singleLine: true)
-                    .id(word)
                 badgeSymbol(size: symbolSize)
+                    .frame(height: symbolSize)
+                    .frame(maxWidth: .infinity)
+                displayText(word, size: fontSize, singleLine: true)
+                    .frame(height: textHeight, alignment: .top)
+                    .id(word)
             } else {
-                badgeSymbol(size: symbolSize)
                 displayText(word, size: fontSize, singleLine: true)
+                    .frame(height: textHeight, alignment: .bottom)
                     .id(word)
+                badgeSymbol(size: symbolSize)
+                    .frame(height: symbolSize)
+                    .frame(maxWidth: .infinity)
             }
         }
+        .frame(width: size.width, height: size.height)
     }
 
     private var isFacingOutward: Bool {
@@ -211,10 +199,11 @@ struct DisplayView: View {
         Text(text)
             .font(.appDisplay(size))
             .lineLimit(singleLine ? 1 : nil)
-            .minimumScaleFactor(0.85)
+            .minimumScaleFactor(0.9)
             .multilineTextAlignment(.center)
             .allowsTightening(true)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .layoutPriority(1)
+            .frame(maxWidth: .infinity, alignment: .center)
     }
 
     /// Binary-searches the largest DIN size whose measured bounds fit the
@@ -258,7 +247,11 @@ struct DisplayView: View {
                 upper = candidate
             }
         }
-        return max(12, lower * min(max(scale, 0.6), 1))
+        let scaled = lower * 0.90 * min(max(scale, 0.6), 1)
+        let cap = singleLine
+            ? min(available.width * 0.52, available.height * 0.78)
+            : min(available.width * 0.20, available.height * 0.24)
+        return max(12, min(scaled, cap))
     }
 
     private func word(at date: Date) -> String {
@@ -274,12 +267,8 @@ struct DisplayView: View {
             ? SignagePalette.signInk
             : (backgroundImage != nil ? SignagePalette.signInk : tint)
 
-        return VStack(spacing: 10) {
+        return VStack {
             Spacer()
-
-            if !isBlackedOut {
-                appearanceMenu(surface: surface)
-            }
 
             HStack(spacing: 10) {
                 ControlButton(systemIcon: "chevron.left", label: "Back", surface: surface) {
@@ -310,55 +299,6 @@ struct DisplayView: View {
         }
         .padding(.horizontal, 12)
         .padding(.bottom, 20)
-    }
-
-    private func appearanceMenu(surface: SignColor) -> some View {
-        Menu {
-            Section("Colour") {
-                ForEach(BadgeColor.names, id: \.self) { name in
-                    Button {
-                        current.colorName = name
-                        store.update(current)
-                    } label: {
-                        Label(
-                            BadgeColor.routeName(for: name),
-                            systemImage: current.colorName == name && backgroundImage == nil
-                                ? "checkmark.circle.fill" : "circle.fill"
-                        )
-                    }
-                }
-            }
-
-            Section("Background photo") {
-                Button { showingCamera = true } label: {
-                    Label("Take a photo", systemImage: "camera.fill")
-                }
-                PhotosPicker(selection: $pickerItem, matching: .images) {
-                    Label("Choose a photo", systemImage: "photo.on.rectangle")
-                }
-                if backgroundImage != nil {
-                    Button(role: .destructive) { apply(photo: nil) } label: {
-                        Label("Remove photo", systemImage: "photo.badge.minus.fill")
-                    }
-                }
-            }
-        } label: {
-            Label("Appearance", systemImage: "ellipsis")
-                .font(.appFootnote)
-                .fontWeight(.semibold)
-                .foregroundStyle(surface.color)
-                .padding(.horizontal, 14)
-                .frame(height: 34)
-                .background(
-                    Capsule().fill(surface.readableForeground.opacity(0.86))
-                )
-        }
-        .accessibilityLabel("Change badge appearance")
-    }
-
-    private func apply(photo: UIImage?) {
-        current = store.setImage(photo, for: current)
-        backgroundImage = photo
     }
 
     private func speak() {

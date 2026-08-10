@@ -104,6 +104,7 @@ struct PlatformHeader: View {
     let text: String
     var systemIcon: String?
     var tint: SignColor = SignagePalette.motorway
+    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -124,6 +125,10 @@ struct PlatformHeader: View {
         }
         .padding(.top, 8)
         .padding(.bottom, 2)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        // Plain-list section headers float as the list scrolls. Give the
+        // floating header an opaque surface so rows never show through it.
+        .background(SignagePalette.surface(scheme))
         .textCase(nil)
         // Restore the un-shouted text for VoiceOver.
         .accessibilityElement(children: .ignore)
