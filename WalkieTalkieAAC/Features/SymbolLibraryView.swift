@@ -52,6 +52,13 @@ struct SymbolLibraryView: View {
                     } else {
                         ForEach(categories) { category in
                             Section {
+                                Text(category.name)
+                                    .font(.appHeadline)
+                                    .foregroundStyle(SignagePalette.concrete.color)
+                                    .textCase(nil)
+                                    .padding(.vertical, 4)
+                                    .signageHeaderRow()
+
                                 LazyVGrid(columns: columns, spacing: 12) {
                                     ForEach(category.symbols) { symbol in
                                         symbolCard(symbol)
@@ -61,12 +68,6 @@ struct SymbolLibraryView: View {
                                 .listRowInsets(EdgeInsets())
                                 .listRowBackground(Color.clear)
                                 .listRowSeparator(.hidden)
-                            } header: {
-                                Text(category.name)
-                                    .font(.appHeadline)
-                                    .foregroundStyle(SignagePalette.concrete.color)
-                                    .textCase(nil)
-                                    .padding(.vertical, 4)
                             }
                         }
                     }

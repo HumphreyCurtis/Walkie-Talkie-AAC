@@ -101,23 +101,25 @@ struct ContentView: View {
                     }
 
                     Section {
-                        ForEach(everydayLife) { row(for: $0) }
-                    } header: {
                         PlatformHeader(
                             text: "Find the words",
                             systemIcon: "character.book.closed.fill",
                             tint: SignagePalette.routeGreen
                         )
+                        .signageHeaderRow()
+
+                        ForEach(everydayLife) { row(for: $0) }
                     }
 
                     Section {
-                        ForEach(app) { row(for: $0) }
-                    } header: {
                         PlatformHeader(
                             text: "This app",
                             systemIcon: "app.badge",
                             tint: SignagePalette.concrete
                         )
+                        .signageHeaderRow()
+
+                        ForEach(app) { row(for: $0) }
                     }
                 }
                 .listStyle(.plain)
@@ -131,7 +133,7 @@ struct ContentView: View {
 
     private var homeHeader: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text("Walkie Talkie")
+            Text("Walkie Talkie AAC")
                 .font(.appLargeTitle)
                 .foregroundStyle(SignagePalette.ink(scheme))
             Text("Show words. Speak them aloud.")

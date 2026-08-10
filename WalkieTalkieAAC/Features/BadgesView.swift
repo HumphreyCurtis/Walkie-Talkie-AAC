@@ -76,6 +76,13 @@ struct BadgesView: View {
             }
 
             Section {
+                PlatformHeader(
+                    text: "Add a lot at once",
+                    systemIcon: "square.and.arrow.down",
+                    tint: SignagePalette.diversion
+                )
+                .signageHeaderRow()
+
                 Button {
                     showingImport = true
                 } label: {
@@ -101,12 +108,6 @@ struct BadgesView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(
-                    text: "Add a lot at once",
-                    systemIcon: "square.and.arrow.down",
-                    tint: SignagePalette.diversion
-                )
             }
         }
         .listStyle(.plain)

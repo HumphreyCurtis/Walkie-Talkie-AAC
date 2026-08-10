@@ -37,7 +37,7 @@ struct SymbolSpeakView: View {
             controls
         }
         .signageSurface(chevrons: false)
-        .navigationTitle("Symbol Speak")
+        .navigationTitle("Walkie Talkie AAC")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
@@ -91,7 +91,9 @@ struct SymbolSpeakView: View {
             if let assetName = notification.userInfo?["assetName"] as? String {
                 manualAssetName = assetName
                 manualWord = notification.userInfo?["word"] as? String
-                recognizer.stopTranscribing()
+                Task { @MainActor in
+                    recognizer.stopTranscribing()
+                }
             }
         }
     }
@@ -149,7 +151,7 @@ struct SymbolSpeakView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(displayWord.map { "Showing \($0)" } ?? "Nothing showing yet")
-        .onChange(of: recognizer.latestWord) { _ in
+        .onChange(of: recognizer.latestWord) { _, _ in
             manualAssetName = nil
             manualWord = nil
         }

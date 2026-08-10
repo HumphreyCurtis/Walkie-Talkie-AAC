@@ -23,15 +23,7 @@ enum SymbolLibrary {
     // MARK: - Word lookup (Phase 4, Symbol Speak)
 
     /// Word → asset name from the curated Mulberry symbol set.
-    private static let wordMap: [String: String] = {
-        guard let url = Bundle.main.url(forResource: "word-map", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let map = try? JSONSerialization.jsonObject(with: data) as? [String: String]
-        else {
-            return [:]
-        }
-        return map
-    }()
+    private static let wordMap: [String: String] = embeddedWordMap
 
     /// Hand-picked synonyms the automated mapping cannot know about.
     private static let synonyms: [String: String] = [
@@ -76,14 +68,7 @@ enum SymbolLibrary {
 
     // MARK: - Symbol Library (Phase 5)
 
-    private static let _allSymbols: [CommunicationSymbol] = {
-        guard let url = Bundle.main.url(forResource: "curated-symbols", withExtension: "csv"),
-              let data = try? String(contentsOf: url)
-        else {
-            return []
-        }
-        return parseCSV(data)
-    }()
+    private static let _allSymbols: [CommunicationSymbol] = embeddedSymbols
 
     static var allSymbols: [CommunicationSymbol] { _allSymbols }
 

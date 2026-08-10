@@ -28,13 +28,17 @@ struct PhotoToSpeechView: View {
     @State private var chosen: Classification?
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 18) {
-                photo
-                results
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 18) {
+                    photo
+                    results
+                }
+                .padding(20)
+                .signageColumn()
+                .frame(minHeight: geometry.size.height - 100, alignment: .top)
             }
-            .padding(20)
-            .signageColumn()
+            .scrollBounceBehavior(.basedOnSize)
         }
         .safeAreaInset(edge: .bottom) { sourceButtons }
         .signageSurface()
@@ -83,7 +87,7 @@ struct PhotoToSpeechView: View {
         } else {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .fill(SignagePalette.concrete.color.opacity(0.12))
-                .frame(height: 220)
+                .frame(maxHeight: .infinity)
                 .overlay {
                     VStack(spacing: 12) {
                         Image(systemName: "camera.viewfinder")

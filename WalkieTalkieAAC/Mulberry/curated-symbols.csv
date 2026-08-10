@@ -2,7 +2,7 @@ word,symbol_id,symbol_en,asset_name,category
 above,3,above,above,Descriptive Position
 absent,4,absent,absent,Descriptive State
 across,7,across,across,Descriptive Direction
-add,9,add,add,Number Activity
+add,9,add,number_add,Number Activity
 advent,10,Advent,advent,Religion Festival
 aeroplane,14,aeroplane,aeroplane,Transport Air
 after,17,after,after,Descriptive Position

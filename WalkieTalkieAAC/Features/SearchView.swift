@@ -131,6 +131,13 @@ struct SearchView: View {
             }
 
             Section {
+                PlatformHeader(
+                    text: "Look it up in",
+                    systemIcon: "arrow.up.forward.app",
+                    tint: SignagePalette.terminal
+                )
+                .signageHeaderRow()
+
                 ForEach(sources) { source in
                     Button {
                         open(source)
@@ -147,12 +154,6 @@ struct SearchView: View {
                     .disabled(trimmedQuery.isEmpty)
                     .opacity(trimmedQuery.isEmpty ? 0.45 : 1)
                 }
-            } header: {
-                PlatformHeader(
-                    text: "Look it up in",
-                    systemIcon: "arrow.up.forward.app",
-                    tint: SignagePalette.terminal
-                )
             } footer: {
                 Text("These open in Safari. This app does not send anything anywhere on its own.")
                     .signageFooter()

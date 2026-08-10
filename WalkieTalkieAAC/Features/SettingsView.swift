@@ -44,6 +44,9 @@ struct SettingsView: View {
             }
 
             Section {
+                PlatformHeader(text: "Word display", systemIcon: "textformat.size", tint: tint)
+                    .signageHeaderRow()
+
                 // The stored value is a duration, so invert the binding: right
                 // is faster, matching the speaking-speed slider below.
                 slider(
@@ -54,14 +57,15 @@ struct SettingsView: View {
                     ),
                     range: WordPace.fastest...WordPace.slowest
                 )
-            } header: {
-                PlatformHeader(text: "Word display", systemIcon: "textformat.size", tint: tint)
             } footer: {
                 Text("How long each word stays on a one-word-at-a-time badge before the next one.")
                     .signageFooter()
             }
 
             Section {
+                PlatformHeader(text: "Voice", systemIcon: "waveform", tint: tint)
+                    .signageHeaderRow()
+
                 Toggle(isOn: $settings.prefersFemaleVoice) {
                     Text("Use a female voice")
                         .font(.appHeadline)
@@ -87,8 +91,6 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(text: "Voice", systemIcon: "waveform", tint: tint)
             }
         }
         .listStyle(.plain)

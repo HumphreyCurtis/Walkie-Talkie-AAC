@@ -53,6 +53,9 @@ struct AboutView: View {
             }
 
             Section {
+                PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
+                    .signageHeaderRow()
+
                 Link(destination: AppLinks.donate) {
                     SignageRow(
                         title: "Donate to Aphasia Re-Connect",
@@ -74,14 +77,15 @@ struct AboutView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
             } footer: {
                 Text("The app is free and always will be. Aphasia Re-Connect is UK registered charity \(AppLinks.charityNumber).")
                     .signageFooter()
             }
 
             Section {
+                PlatformHeader(text: "What this is", systemIcon: "info.circle.fill", tint: tint)
+                    .signageHeaderRow()
+
                 Text("Walkie Talkie turns your phone into a sign. Show a message to the person you are talking to in type that is big enough to read at a glance, whether speech is difficult or you use different languages.")
                     .font(.appBody)
                     .fixedSize(horizontal: false, vertical: true)
@@ -95,27 +99,33 @@ struct AboutView: View {
                     .padding(.vertical, 10)
                     .padding(.horizontal, 14)
                     .signageRowStyle()
-            } header: {
-                PlatformHeader(text: "What this is", systemIcon: "info.circle.fill", tint: tint)
             }
 
             Section {
-                ForEach(AphasiaInfo.explainers, id: \.self) { line in
-                    AboutSpeakableRow(text: line, tint: SignagePalette.routeGreen)
-                        .signageRowStyle()
-                }
-            } header: {
                 PlatformHeader(
                     text: "What is aphasia?",
                     systemIcon: "person.fill.questionmark",
                     tint: SignagePalette.routeGreen
                 )
+                .signageHeaderRow()
+
+                ForEach(AphasiaInfo.explainers, id: \.self) { line in
+                    AboutSpeakableRow(text: line, tint: SignagePalette.routeGreen)
+                        .signageRowStyle()
+                }
             } footer: {
                 Text("Tap a sentence to say it out loud.")
                     .signageFooter()
             }
 
             Section {
+                PlatformHeader(
+                    text: "How to talk with me",
+                    systemIcon: "bubble.left.and.bubble.right.fill",
+                    tint: SignagePalette.routeGreen
+                )
+                .signageHeaderRow()
+
                 ForEach(Array(AphasiaInfo.tips.enumerated()), id: \.offset) { index, tip in
                     AboutSpeakableRow(
                         text: tip,
@@ -136,15 +146,16 @@ struct AboutView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(
-                    text: "How to talk with me",
-                    systemIcon: "bubble.left.and.bubble.right.fill",
-                    tint: SignagePalette.routeGreen
-                )
             }
 
             Section {
+                PlatformHeader(
+                    text: "Aphasia support",
+                    systemIcon: "arrow.up.forward.app",
+                    tint: SignagePalette.routeGreen
+                )
+                .signageHeaderRow()
+
                 Link(destination: AphasiaInfo.learnMoreURL) {
                     SignageRow(
                         title: "Read about aphasia",
@@ -166,12 +177,6 @@ struct AboutView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(
-                    text: "Aphasia support",
-                    systemIcon: "arrow.up.forward.app",
-                    tint: SignagePalette.routeGreen
-                )
             }
 
             Section {
@@ -192,6 +197,13 @@ struct AboutView: View {
             }
 
             Section {
+                PlatformHeader(
+                    text: "Symbols",
+                    systemIcon: "photo.stack.fill",
+                    tint: SignagePalette.routeGreen
+                )
+                .signageHeaderRow()
+
                 Link(destination: AppLinks.mulberrySymbols) {
                     SignageRow(
                         title: "Mulberry Symbols",
@@ -213,12 +225,6 @@ struct AboutView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(
-                    text: "Symbols",
-                    systemIcon: "photo.stack.fill",
-                    tint: SignagePalette.routeGreen
-                )
             } footer: {
                 Text("Mulberry Symbols v3.6.0. Over 500 curated picture symbols for communication.")
                     .signageFooter()
