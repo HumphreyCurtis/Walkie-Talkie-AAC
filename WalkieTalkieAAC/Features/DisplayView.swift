@@ -97,17 +97,20 @@ struct DisplayView: View {
                 width: max(80, geometry.size.width - 40),
                 height: max(44, geometry.size.height - verticalInset * 2)
             )
+            let metrics = signLayoutMetrics(from: contentSize)
 
             Group {
                 if current.displayMode == .wordByWord {
                     TimelineView(.periodic(from: sequenceStartedAt, by: min(interval, 0.25))) { context in
                         wordLayout(
                             word: word(at: context.date),
-                            size: contentSize
+                            size: contentSize,
+                            metrics: metrics,
+                            fontSize: fontSizeForWordLayout(size: contentSize, metrics: metrics)
                         )
                     }
                 } else {
-                    wholeMessageLayout(size: contentSize)
+                    wholeMessageLayout(size: contentSize, metrics: metrics)
                 }
             }
             .foregroundStyle(foreground)
@@ -124,11 +127,26 @@ struct DisplayView: View {
         .accessibilityHint("Double tap to speak this badge")
     }
 
-    private func wholeMessageLayout(size: CGSize) -> some View {
+    private func signLayoutMetrics(from size: CGSize) -> (spacing: CGFloat, symbolSize: CGFloat, textHeight: CGFloat, textArea: CGSize) {
         let spacing = min(12, max(6, size.height * 0.025))
         let symbolSize = min(size.width * 0.18, max(38, min(64, size.height * 0.16)))
         let textHeight = max(24, size.height - symbolSize - spacing)
         let textArea = CGSize(width: size.width - 12, height: textHeight)
+        return (spacing, symbolSize, textHeight, textArea)
+    }
+
+    // Computed outside the TimelineView closure so the 12-iteration binary
+    // search runs only when the badge or container size changes, not on every
+    // periodic tick.
+    private func fontSizeForWordLayout(size: CGSize, metrics: (spacing: CGFloat, symbolSize: CGFloat, textHeight: CGFloat, textArea: CGSize)) -> CGFloat {
+        let (_, _, _, textArea) = metrics
+        return words.map {
+            fittedSize(for: $0, in: textArea, singleLine: true, scale: current.textScale)
+        }.min() ?? 48
+    }
+
+    private func wholeMessageLayout(size: CGSize, metrics: (spacing: CGFloat, symbolSize: CGFloat, textHeight: CGFloat, textArea: CGSize)) -> some View {
+        let (spacing, symbolSize, textHeight, textArea) = metrics
         let fontSize = fittedSize(
             for: current.displayText,
             in: textArea,
@@ -152,16 +170,8 @@ struct DisplayView: View {
         .frame(width: size.width, height: size.height, alignment: .center)
     }
 
-    private func wordLayout(word: String, size: CGSize) -> some View {
-        let spacing = min(12, max(6, size.height * 0.025))
-        let symbolSize = min(size.width * 0.18, max(38, min(64, size.height * 0.16)))
-        let textHeight = max(24, size.height - symbolSize - spacing)
-        let textArea = CGSize(width: size.width - 12, height: textHeight)
-        // Size every word from the most demanding word so the display does
-        // not jump larger and smaller as the sentence advances.
-        let fontSize = words.map {
-            fittedSize(for: $0, in: textArea, singleLine: true, scale: current.textScale)
-        }.min() ?? 48
+    private func wordLayout(word: String, size: CGSize, metrics: (spacing: CGFloat, symbolSize: CGFloat, textHeight: CGFloat, textArea: CGSize), fontSize: CGFloat) -> some View {
+        let (spacing, symbolSize, textHeight, textArea) = metrics
         let renderedTextHeight = measuredTextHeight(
             for: word,
             width: textArea.width,
