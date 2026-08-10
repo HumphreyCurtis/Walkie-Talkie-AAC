@@ -90,13 +90,14 @@ struct ContentView: View {
 
                 List {
                     Section {
-                        ForEach(speaking) { row(for: $0) }
-                    } header: {
                         PlatformHeader(
                             text: "Say something",
                             systemIcon: "dot.radiowaves.left.and.right",
                             tint: SignagePalette.motorway
                         )
+                        .signageHeaderRow()
+
+                        ForEach(speaking) { row(for: $0) }
                     }
 
                     Section {

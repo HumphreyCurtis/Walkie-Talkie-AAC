@@ -22,6 +22,9 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section {
+                PlatformHeader(text: "Display", systemIcon: "rectangle.on.rectangle", tint: tint)
+                    .signageHeaderRow()
+
                 Toggle(isOn: $settings.facesOutward) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Badges face outward")
@@ -35,8 +38,6 @@ struct SettingsView: View {
                 .padding(.horizontal, 14)
                 .signageRowStyle()
 
-            } header: {
-                PlatformHeader(text: "Display", systemIcon: "rectangle.on.rectangle", tint: tint)
             } footer: {
                 Text("Turn this off when you want to hold the phone normally instead of wearing it facing outward.")
                     .signageFooter()

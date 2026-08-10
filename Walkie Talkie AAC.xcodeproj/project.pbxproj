@@ -254,7 +254,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WalkieTalkieAAC-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "WalkieTalkie AAC";
+				INFOPLIST_KEY_CFBundleDisplayName = "Walkie Talkie AAC";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take a photo so the app can suggest the word for what you are looking at. Photos stay on this phone.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used by Symbol Speak to hear what is said and show the matching picture. Nothing is recorded or sent anywhere.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to pick a photo so the app can suggest the word for it. Photos stay on this phone.";
@@ -270,6 +270,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.humphreycurtis.WalkieTalkieAAC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -288,7 +292,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WalkieTalkieAAC-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "WalkieTalkie AAC";
+				INFOPLIST_KEY_CFBundleDisplayName = "Walkie Talkie AAC";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take a photo so the app can suggest the word for what you are looking at. Photos stay on this phone.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used by Symbol Speak to hear what is said and show the matching picture. Nothing is recorded or sent anywhere.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to pick a photo so the app can suggest the word for it. Photos stay on this phone.";
@@ -304,6 +308,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.humphreycurtis.WalkieTalkieAAC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

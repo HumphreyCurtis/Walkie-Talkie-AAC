@@ -82,6 +82,13 @@ struct SearchView: View {
     var body: some View {
         List {
             Section {
+                PlatformHeader(
+                    text: "Search",
+                    systemIcon: "magnifyingglass",
+                    tint: SignagePalette.terminal
+                )
+                .signageHeaderRow()
+
                 HStack(spacing: 10) {
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 17, weight: .bold))
@@ -121,12 +128,6 @@ struct SearchView: View {
                     .buttonStyle(.plain)
                     .signageRowStyle()
                 }
-            } header: {
-                PlatformHeader(
-                    text: "Search",
-                    systemIcon: "magnifyingglass",
-                    tint: SignagePalette.terminal
-                )
             }
 
             Section {

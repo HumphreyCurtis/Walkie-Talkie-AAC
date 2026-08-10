@@ -23,6 +23,9 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
+                PlatformHeader(text: "Research", systemIcon: "book.closed.fill", tint: tint)
+                    .signageHeaderRow()
+
                 Link(destination: AppLinks.researchPaper) {
                     SignageRow(
                         title: "Read the research",
@@ -44,8 +47,6 @@ struct AboutView: View {
                 }
                 .buttonStyle(.plain)
                 .signageRowStyle()
-            } header: {
-                PlatformHeader(text: "Research", systemIcon: "book.closed.fill", tint: tint)
             } footer: {
                 Text("Designed with and by people with aphasia, in workshops run with Aphasia Re-Connect.")
                     .signageFooter()

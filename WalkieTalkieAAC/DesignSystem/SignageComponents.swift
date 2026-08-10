@@ -288,6 +288,15 @@ extension View {
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
     }
+
+    /// Makes a section title part of the scrolling content instead of using
+    /// List's automatically pinned header supplementary view. Plain List
+    /// headers otherwise float over rows and can inherit swipe artefacts.
+    func signageHeaderRow() -> some View {
+        listRowInsets(EdgeInsets(top: 2, leading: 0, bottom: 2, trailing: 0))
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+    }
 }
 
 private struct SignageRowStyle: ViewModifier {

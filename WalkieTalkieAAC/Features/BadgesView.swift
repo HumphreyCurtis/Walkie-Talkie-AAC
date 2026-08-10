@@ -15,10 +15,26 @@ struct BadgesView: View {
     @State private var showingImport = false
     @State private var showingJSON = false
     @State private var editingBadge: Badge?
+    @State private var editMode: EditMode = .inactive
 
     var body: some View {
         List {
             Section {
+                VStack(alignment: .leading, spacing: 3) {
+                    PlatformHeader(
+                        text: "Your badges",
+                        systemIcon: "rectangle.stack.fill",
+                        tint: SignagePalette.motorway
+                    )
+
+                    Text("Swipe left to edit  •  Swipe right to speak")
+                        .font(.appCaption)
+                        .foregroundStyle(SignagePalette.concrete.color)
+                        .padding(.bottom, 3)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .signageHeaderRow()
+
                 ForEach(store.badges) { badge in
                     NavigationLink {
                         DisplayView(badge: badge)
@@ -54,14 +70,8 @@ struct BadgesView: View {
                 }
                 .onDelete { store.delete(at: $0) }
                 .onMove { store.move(from: $0, to: $1) }
-            } header: {
-                PlatformHeader(
-                    text: "Your badges",
-                    systemIcon: "rectangle.stack.fill",
-                    tint: SignagePalette.motorway
-                )
             } footer: {
-                Text("Tap a badge to show it. Swipe right to speak it, left to edit it.")
+                Text("Tap a badge to show it.")
                     .signageFooter()
             }
 
@@ -102,12 +112,10 @@ struct BadgesView: View {
         .listStyle(.plain)
         .signageContentWidth()
         .signageSurface()
+        .environment(\.editMode, $editMode)
         .navigationTitle("Badges")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            // Both on the trailing side: an EditButton on the leading side
-            // sits directly against the back chevron, and the two are easy
-            // to confuse and easier still to mis-tap.
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     showingNewBadge = true
@@ -116,7 +124,11 @@ struct BadgesView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                EditButton()
+                Button(editMode.isEditing ? "Done" : "Reorder") {
+                    withAnimation {
+                        editMode = editMode.isEditing ? .inactive : .active
+                    }
+                }
             }
         }
         .sheet(isPresented: $showingNewBadge) {
@@ -132,6 +144,7 @@ struct BadgesView: View {
             NavigationStack { BadgeJSONEditorView() }
         }
     }
+
 }
 
 #Preview {
