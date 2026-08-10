@@ -18,58 +18,11 @@ enum SymbolLibrary {
     /// itself. Kept as synonyms rather than as extra image sets so one
     /// picture can answer to everything a person might actually say.
     private static let synonyms: [String: String] = [
-        // Expression
+        // Photos (not from Mulberry) — preserved during Phase 1 cleanup
         "aphasia": "aphasia",
         "stroke": "aphasia",
-        "speak": "speak",
-        "speaking": "speak",
-        "talk": "speak",
-        "talking": "speak",
-        "help": "help",
-        "helping": "help",
-        "assist": "assistance",
-        "assistance": "assistance",
-        "carer": "assistance",
-        "support": "assistance",
-        "disabled": "disabled",
-        "disability": "disability",
-        "wheelchair": "disability",
-        "lost": "lost",
-        "confused": "lost",
-        "thanks": "thanks",
-        "thank": "thanks",
-        "happy": "thanks",
-        "please": "thanks",
-        "time": "time",
-        "clock": "time",
-        "wait": "time",
-        "waiting": "time",
-        "late": "time",
-
-        // Object
-        "chair": "chair",
-        "seat": "chair",
-        "sit": "chair",
-        "sitting": "chair",
-        "slow": "slowly",
-        "slowly": "slowly",
-        "slower": "slowly",
-        "tortoise": "slowly",
-        "toilet": "toilet",
-        "loo": "toilet",
-        "bathroom": "toilet",
-        "restroom": "toilet",
         "sunflower": "sunflower",
         "flower": "sunflower",
-
-        // Drink
-        "coffee": "coffee",
-        "tea": "coffee",
-        "drink": "coffee",
-        "cup": "coffee",
-        "americano": "coffee",
-        "cappuccino": "coffee",
-        "latte": "coffee",
     ]
 
     /// The asset name for a spoken word, or nil if nothing matches.
