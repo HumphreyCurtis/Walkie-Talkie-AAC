@@ -12,7 +12,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A1000000000000000000F001 /* WalkieTalkieAAC */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = WalkieTalkieAAC; sourceTree = "<group>"; };
+		A1000000000000000000F001 /* WalkieTalkieAAC */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WalkieTalkieAAC;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,7 +254,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WalkieTalkieAAC-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Walkie Talkie";
+				INFOPLIST_KEY_CFBundleDisplayName = "WalkieTalkie AAC";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take a photo so the app can suggest the word for what you are looking at. Photos stay on this phone.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used by Symbol Speak to hear what is said and show the matching picture. Nothing is recorded or sent anywhere.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to pick a photo so the app can suggest the word for it. Photos stay on this phone.";
@@ -284,7 +288,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WalkieTalkieAAC-Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Walkie Talkie";
+				INFOPLIST_KEY_CFBundleDisplayName = "WalkieTalkie AAC";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Used to take a photo so the app can suggest the word for what you are looking at. Photos stay on this phone.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Used by Symbol Speak to hear what is said and show the matching picture. Nothing is recorded or sent anywhere.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Used to pick a photo so the app can suggest the word for it. Photos stay on this phone.";

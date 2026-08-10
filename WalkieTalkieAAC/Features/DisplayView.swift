@@ -36,8 +36,16 @@ struct DisplayView: View {
     var body: some View {
         ZStack {
             background
-            if !isBlackedOut { sign }
-            controls
+
+            VStack(spacing: 0) {
+                if isBlackedOut {
+                    Spacer(minLength: 0)
+                } else {
+                    sign
+                }
+
+                controls
+            }
         }
         .contentShape(Rectangle())
         .onTapGesture { speak() }
@@ -81,14 +89,13 @@ struct DisplayView: View {
 
     private var sign: some View {
         GeometryReader { geometry in
-            // The controls occupy the final 96 points of the display. The
-            // message is never allowed into that area, including on short
-            // landscape screens.
-            let topInset: CGFloat = 16
-            let controlsInset: CGFloat = 96
+            // This reader receives only the space above the control bar,
+            // because the two are siblings in a VStack rather than layers in
+            // a ZStack. They therefore cannot overlap in any orientation.
+            let verticalInset: CGFloat = 10
             let contentSize = CGSize(
                 width: max(80, geometry.size.width - 40),
-                height: max(44, geometry.size.height - topInset - controlsInset)
+                height: max(44, geometry.size.height - verticalInset * 2)
             )
 
             Group {
@@ -107,8 +114,10 @@ struct DisplayView: View {
             .shadow(color: .black.opacity(backgroundImage == nil ? 0 : 0.55), radius: 8)
             .frame(width: contentSize.width, height: contentSize.height)
             .clipped()
-            .position(x: geometry.size.width / 2, y: topInset + contentSize.height / 2)
-            .rotationEffect(.degrees(rotation))
+            .position(
+                x: geometry.size.width / 2,
+                y: geometry.size.height - verticalInset - contentSize.height / 2
+            )
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(current.displayText)
@@ -126,25 +135,21 @@ struct DisplayView: View {
             singleLine: false,
             scale: current.textScale
         )
+        let renderedTextHeight = measuredTextHeight(
+            for: current.displayText,
+            width: textArea.width,
+            fontSize: fontSize,
+            maximum: textHeight
+        )
 
         return VStack(spacing: spacing) {
-            // Keep the symbol in the lower part of the physical screen even
-            // when the message itself is rotated to face away from the user.
-            if isFacingOutward {
-                badgeSymbol(size: symbolSize)
-                    .frame(height: symbolSize)
-                    .frame(maxWidth: .infinity)
-                displayText(current.displayText, size: fontSize, singleLine: false)
-                    .frame(height: textHeight, alignment: .top)
-            } else {
-                displayText(current.displayText, size: fontSize, singleLine: false)
-                    .frame(height: textHeight, alignment: .bottom)
-                badgeSymbol(size: symbolSize)
-                    .frame(height: symbolSize)
-                    .frame(maxWidth: .infinity)
-            }
+            displayText(current.displayText, size: fontSize, singleLine: false)
+                .frame(height: renderedTextHeight)
+            badgeSymbol(size: symbolSize)
+                .frame(height: symbolSize)
+                .frame(maxWidth: .infinity)
         }
-        .frame(width: size.width, height: size.height)
+        .frame(width: size.width, height: size.height, alignment: .center)
     }
 
     private func wordLayout(word: String, size: CGSize) -> some View {
@@ -157,29 +162,22 @@ struct DisplayView: View {
         let fontSize = words.map {
             fittedSize(for: $0, in: textArea, singleLine: true, scale: current.textScale)
         }.min() ?? 48
+        let renderedTextHeight = measuredTextHeight(
+            for: word,
+            width: textArea.width,
+            fontSize: fontSize,
+            maximum: textHeight
+        )
 
         return VStack(spacing: spacing) {
-            if isFacingOutward {
-                badgeSymbol(size: symbolSize)
-                    .frame(height: symbolSize)
-                    .frame(maxWidth: .infinity)
-                displayText(word, size: fontSize, singleLine: true)
-                    .frame(height: textHeight, alignment: .top)
-                    .id(word)
-            } else {
-                displayText(word, size: fontSize, singleLine: true)
-                    .frame(height: textHeight, alignment: .bottom)
-                    .id(word)
-                badgeSymbol(size: symbolSize)
-                    .frame(height: symbolSize)
-                    .frame(maxWidth: .infinity)
-            }
+            displayText(word, size: fontSize, singleLine: true)
+                .frame(height: renderedTextHeight)
+                .id(word)
+            badgeSymbol(size: symbolSize)
+                .frame(height: symbolSize)
+                .frame(maxWidth: .infinity)
         }
         .frame(width: size.width, height: size.height)
-    }
-
-    private var isFacingOutward: Bool {
-        abs(rotation.truncatingRemainder(dividingBy: 360)) > 90
     }
 
     @ViewBuilder
@@ -187,10 +185,12 @@ struct DisplayView: View {
         if let emoji = current.emoji, !emoji.isEmpty {
             Text(emoji)
                 .font(.system(size: size * 0.88))
+                .rotationEffect(.degrees(rotation))
                 .frame(width: size, height: size)
         } else {
             Image(systemName: current.systemIcon)
                 .font(.system(size: size * 0.74, weight: .bold))
+                .rotationEffect(.degrees(rotation))
                 .frame(width: size, height: size)
         }
     }
@@ -203,6 +203,7 @@ struct DisplayView: View {
             .multilineTextAlignment(.center)
             .allowsTightening(true)
             .layoutPriority(1)
+            .rotationEffect(.degrees(rotation))
             .frame(maxWidth: .infinity, alignment: .center)
     }
 
@@ -254,6 +255,25 @@ struct DisplayView: View {
         return max(12, min(scaled, cap))
     }
 
+    private func measuredTextHeight(
+        for text: String,
+        width: CGFloat,
+        fontSize: CGFloat,
+        maximum: CGFloat
+    ) -> CGFloat {
+        let font = UIFont(name: AppFont.signage, size: fontSize)
+            ?? UIFont.boldSystemFont(ofSize: fontSize)
+        let bounds = (text as NSString).boundingRect(
+            with: CGSize(width: width, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil
+        )
+        // A small allowance covers SwiftUI/UIKit line-metric differences
+        // without recreating the oversized invisible text frame.
+        return min(maximum, max(font.lineHeight, ceil(bounds.height) + 6))
+    }
+
     private func word(at date: Date) -> String {
         // The extra sequence slot repeats the final word once, producing one
         // additional interval of pause before the sentence starts again.
@@ -267,37 +287,34 @@ struct DisplayView: View {
             ? SignagePalette.signInk
             : (backgroundImage != nil ? SignagePalette.signInk : tint)
 
-        return VStack {
-            Spacer()
-
-            HStack(spacing: 10) {
-                ControlButton(systemIcon: "chevron.left", label: "Back", surface: surface) {
-                    dismiss()
+        return HStack(spacing: 10) {
+            ControlButton(systemIcon: "chevron.left", label: "Back", surface: surface) {
+                dismiss()
+            }
+            ControlButton(
+                systemIcon: "speaker.wave.3.fill",
+                label: "Speak this badge",
+                surface: surface
+            ) { speak() }
+            ControlButton(
+                systemIcon: "rotate.right.fill",
+                label: "Turn the badge around",
+                surface: surface
+            ) {
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    rotation = (rotation + 180).truncatingRemainder(dividingBy: 360)
                 }
-                ControlButton(
-                    systemIcon: "speaker.wave.3.fill",
-                    label: "Speak this badge",
-                    surface: surface
-                ) { speak() }
-                ControlButton(
-                    systemIcon: "rotate.right.fill",
-                    label: "Turn the badge around",
-                    surface: surface
-                ) {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        rotation = (rotation + 180).truncatingRemainder(dividingBy: 360)
-                    }
-                }
-                ControlButton(
-                    systemIcon: isBlackedOut ? "eye.fill" : "eye.slash.fill",
-                    label: isBlackedOut ? "Show the badge" : "Hide the badge",
-                    surface: surface
-                ) {
-                    withAnimation(.easeInOut(duration: 0.2)) { isBlackedOut.toggle() }
-                }
+            }
+            ControlButton(
+                systemIcon: isBlackedOut ? "eye.fill" : "eye.slash.fill",
+                label: isBlackedOut ? "Show the badge" : "Hide the badge",
+                surface: surface
+            ) {
+                withAnimation(.easeInOut(duration: 0.2)) { isBlackedOut.toggle() }
             }
         }
         .padding(.horizontal, 12)
+        .padding(.top, 14)
         .padding(.bottom, 20)
     }
 
