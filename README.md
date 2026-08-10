@@ -83,4 +83,4 @@ Symbols by [Mulberry Symbols](https://mulberrysymbols.org) © Garry Paxton / Ste
 
 ## License
 
-MIT.
+Source code is available under the [MIT License](LICENSE).
