@@ -1,0 +1,517 @@
+word,symbol_id,symbol_en,asset_name,category
+above,3,above,above,Descriptive Position
+absent,4,absent,absent,Descriptive State
+across,7,across,across,Descriptive Direction
+add,9,add,add,Number Activity
+advent,10,Advent,advent,Religion Festival
+aeroplane,14,aeroplane,aeroplane,Transport Air
+after,17,after,after,Descriptive Position
+afternoon,18,afternoon,afternoon,Descriptive Time
+against,21,against,against,Descriptive Position
+ahead,22,ahead,ahead,Descriptive Position
+almond,34,almond,almond,Food Nuts
+angel,36,angel,angel,Religion Person
+answer,40,answer,answer,Number Activity
+ant,41,ant,ant,Animal Spiders and Insects
+arm,52,arm,arm,Healthcare Body parts
+armwrestle,55,"armwrestle_,_to",armwrestle,Leisure Games
+around,57,around,around,Descriptive Direction
+art,59,art,art,Art Making
+ask,3121,"ask_,_to",ask,Verb
+assembly,66,assembly,assembly,Work and School Timetable
+assistance,0,care_assistant_1a,assistance,People Profession
+atom,68,atom,atom,Science
+autumn,73,autumn,autumn,Descriptive Time
+awake,75,awake,awake,Descriptive State
+away,76,away,away,Descriptive Direction
+baby,79,baby,baby,People Descriptive
+backwards,87,backwards,backwards,Descriptive Direction
+bad,89,bad,bad,Descriptive State
+bake,96,"bake_,_to",bake,Food Kitchen actions
+ball,105,ball,ball,Leisure Toys
+bank,111,bank,bank,Money
+bap,114,bap,bap,Food Breads and baking
+bat,128,bat,bat,Animal Mammal
+bath,129,bath,bath,Building Contents
+bathe,132,"bathe_,_to",bathe,Healthcare Grooming activities
+beach,137,beach,beach,Holiday and travel
+beak,141,beak,beak,Animal Features
+beef,152,beef,beef,Food Meat
+beer,154,beer,beer,Drink Type
+before,158,before,before,Descriptive Position
+behind,160,behind,behind,Descriptive Position
+bell,161,bell,bell,Building Contents
+below,162,below,below,Descriptive Position
+bench,164,bench,bench,Building Garden and farm
+bendy,165,bendy,bendy,Science
+between,169,between,between,Descriptive Position
+bib,170,bib,bib,Clothes General
+bingo,177,bingo,bingo,Leisure Games
+bird,179,bird,bird,Animal Birds
+black,188,black,black,Art Colour
+blackboard,190,blackboard,blackboard,Building Equipment and devices
+bless,198,"bless_,_to",bless,Religion General
+blue,204,blue,blue,Art Colour
+boat,208,boat,boat,Transport Water
+bolt,213,bolt,bolt,Tools Workshop
+bone,214,bone,bone,Animal Activity Feeding
+bonfire,216,bonfire,bonfire,Building Garden and farm
+both,224,both,both,Descriptive Quantity
+bottom,225,bottom,bottom,Descriptive Position
+bow,228,bow,bow,Clothes Accessories
+bowl,231,bowl,bowl,Food Kitchen items
+box,3131,"box_,_to",box,Verb
+bra,241,bra,bra,Clothes General
+brazil,1176,flag_Brazil,brazil,Country Flags
+break,259,"break_,_to",break,Descriptive State
+bridle,273,bridle,bridle,Animal Activity Grooming
+bright,276,bright,bright,Electrical General
+broken,280,broken,broken,Descriptive State
+brooch,282,brooch,brooch,Clothes Jewellery
+buckle,299,buckle,buckle,Clothes Accessories
+bud,300,bud,bud,Plants and Trees
+bumpy,305,bumpy,bumpy,Descriptive Shape
+burn,309,burn,burn,Healthcare Medical conditions
+bus,310,bus,bus,Leisure Toys
+bush,313,bush,bush,Plants and Trees
+busy,314,busy,busy,People Descriptive
+butter,315,butter,butter,Food Dairy
+cafe,324,cafe,cafe,Food Feeding and eating
+cage,326,cage,cage,Animal Habitat
+cake,327,cake,cake,Food Breads and baking
+calendar,337,calendar,calendar,Work and School Timetable
+camera,341,camera,camera,Electrical Media
+canada,1183,flag_Canada,canada,Country Flags
+canoe,350,canoe,canoe,Transport Water
+cap,351,cap,cap,Clothes General
+car,352,car,car,Transport Road
+carbohydrates,363,carbohydrates,carbohydrates,Food Diet
+card,364,card,card,Celebration Item
+cart,388,cart,cart,Transport Road
+cashew,392,cashew,cashew,Food Nuts
+castle,397,castle,castle,Building Public
+cat,399,cat,cat,Animal Mammal
+cctv,406,cctv,cctv,Electrical Media
+celebration,413,celebration,celebration,Celebration Event
+chair,425,chair,chair,Building Furniture
+chalk,430,chalk,chalk,Work and School Stationery
+cheese,441,cheese,cheese,Food Dairy
+chicken,458,chicken,chicken,Food Poultry
+china,1191,flag_China,china,Country Flags
+chips,478,chips,chips,Food Vegetables and salads
+chop,487,"chop_,_to",chop,Food Kitchen actions
+church,502,church,church,Building Public
+cigarette,503,cigarette,cigarette,Leisure General
+circle,504,circle,circle,Descriptive Shape
+claw,509,claw,claw,Animal Features
+clay,510,clay,clay,Science
+clipboard,526,clipboard,clipboard,Art Making
+clock,527,clock,clock,Electrical General
+closed,530,closed,closed,Descriptive Position
+cloudy,542,cloudy,cloudy,Environment Weather
+coffee,550,coffee,coffee,Drink Type
+comb,560,comb,comb,Healthcare Grooming items
+comet,563,comet,comet,Science Astronomy
+cook,595,"cook_,_to",cook,Food Kitchen actions
+copy,604,copy,copy,Computer Icon
+correct,610,correct,correct,Descriptive State
+cot,612,cot,cot,Building Furniture
+counters,615,counters,counters,Money
+cow,806,cow,cow,Animal Mammal
+crab,808,crab,crab,Animal Crustacean and Molluscs
+cream,816,cream,cream,Food Dairy
+crooked,830,crooked,crooked,Descriptive Shape
+cross,831,cross,cross,Religion General
+cruiser,836,cruiser,cruiser,Transport Water
+curly,845,curly,curly,Descriptive Shape
+curry,848,curry,curry,Food Meals and snacks
+cut,851,cut,cut,Healthcare Medical conditions
+darts,863,darts,darts,Leisure Games
+date,864,date,date,Descriptive Time
+day,867,day,day,Descriptive Time
+dead,868,dead,dead,Descriptive State
+deep,872,deep,deep,Descriptive Quantity
+desk,891,desk,desk,Building Furniture
+diamond,894,diamond,diamond,Descriptive Shape
+die,3180,"die_,_to",die,Verb
+dirty,909,dirty,dirty,Descriptive State
+disability,0,disabled_sign,disability,Communication Signs
+disabled,0,disabled_sign,disabled,Communication Signs
+dishwasher,919,dishwasher,dishwasher,Building Equipment and devices
+divide,922,divide,divide,Number Activity
+dog,927,dog,dog,Animal Mammal
+doll,936,doll,doll,Leisure Toys
+dolphin,937,dolphin,dolphin,Animal Fish and Marine mammals
+door,939,door,door,Building Structure
+dove,943,dove,dove,Animal Birds
+down,944,down,down,Descriptive Direction
+drama,948,drama,drama,Work and School Subjects
+drinks,971,drinks,drinks,Drink Description
+drum,973,drum,drum,Music Instrument
+dry,975,dry,dry,Descriptive State
+duck,981,duck,duck,Animal Birds
+dust,983,"dust_,_to",dust,Building Household tasks
+ear,991,ear,ear,Healthcare Body parts
+earrings,993,earrings,earrings,Clothes Jewellery
+earthworm,1000,earthworm,earthworm,Animal Other Invertebrates
+east,1002,east,east,Descriptive Direction
+egg,1005,egg,egg,Food Eggs
+eggs,1012,eggs,eggs,Food Eggs
+egypt,1206,flag_Egypt,egypt,Country Flags
+eighth,1017,eighth,eighth,Descriptive Quantity
+either,1019,either,either,Descriptive Quantity
+elearning,1021,elearning,elearning,Electrical Computer
+elf,1024,elf,elf,Celebration Item
+email,1026,email,email,Computer Icon
+empty,1030,empty,empty,Descriptive Quantity
+england,1208,flag_England,england,Country Flags
+enough,1035,enough,enough,Descriptive Quantity
+enter,1036,"enter_,_to",enter,Descriptive Direction
+even,1040,even,even,Descriptive Shape
+every,1041,every,every,Descriptive Quantity
+exit,1045,"exit_,_to",exit,Descriptive Direction
+extra,1048,extra,extra,Descriptive Quantity
+eye,1051,eye,eye,Healthcare Body parts
+family,1069,family,family,People Relationship
+fancy,1071,fancy,fancy,Descriptive State
+fat,1078,fat,fat,People Descriptive
+fats,1081,fats,fats,Food Diet
+favourite,1084,favourite,favourite,Descriptive Quantity
+ferry,1096,ferry,ferry,Transport Water
+field,1098,field,field,Building Garden and farm
+fig,1102,fig,fig,Food Fruit
+file,1103,file,file,Tools Workshop
+fin,1107,fin,fin,Animal Features
+finish,1114,finish,finish,Descriptive Direction
+fire,1116,fire,fire,Descriptive State
+first,1123,first,first,Descriptive Position
+fish,1127,fish,fish,Animal Fish and Marine mammals
+flame,1394,flame,flame,Descriptive State
+flat,1397,flat,flat,Descriptive Shape
+floor,1403,floor,floor,Building Structure
+flute,1412,flute,flute,Music Instrument
+fly,1413,fly,fly,Animal Spiders and Insects
+food,1415,food,food,Food Breads and baking
+forward,1473,forward,forward,Descriptive Direction
+forwards,1474,forwards,forwards,Descriptive Direction
+france,1217,flag_France,france,Country Flags
+frog,1485,frog,frog,Animal Reptiles and Amphibians
+fry,1495,"fry_,_to",fry,Food Kitchen actions
+full,1497,full,full,Descriptive Quantity
+future,1501,future,future,Descriptive Time
+fuzzy,1502,fuzzy,fuzzy,Descriptive State
+garage,1505,garage,garage,Building Residential
+germany,1221,flag_Germany,germany,Country Flags
+globe,1524,globe,globe,Work and School Education
+glue,1526,glue,glue,Work and School Stationery
+gnat,1528,gnat,gnat,Animal Spiders and Insects
+go,3218,"go_,_to",go,Verb
+goal,1530,goal,goal,Sport Accessories
+golf,1534,golf,golf,Sport
+good,1536,good,good,Descriptive State
+great,1560,great,great,Descriptive State
+greece,1224,flag_Greece,greece,Country Flags
+guitar,1576,guitar,guitar,Music Instrument
+gum,1577,gum,gum,Healthcare Body parts
+guy,1578,guy,guy,Celebration Item
+half,1596,half,half,Descriptive Quantity
+halloween,1597,Halloween,halloween,Celebration Event
+ham,1598,ham,ham,Food Meat
+hangar,1613,hangar,hangar,Transport Air
+hard,1617,hard,hard,Descriptive State
+headmouse,1637,headmouse,headmouse,Communication Aid
+heavy,1647,heavy,heavy,Descriptive Quantity
+helicopter,1653,helicopter,helicopter,Transport Air
+hello,1654,hello,hello,Communication Conversation
+helmet,1655,helmet,helmet,Clothes Sport
+help,3232,"help_,_to",help,Verb
+heptagon,1657,heptagon,heptagon,Descriptive Shape
+hexagon,1659,hexagon,hexagon,Descriptive Shape
+high,1660,high,high,Descriptive Quantity
+highest,1662,highest,highest,Descriptive Position
+hoe,1668,hoe,hoe,Tools Garden
+hoist,1669,hoist,hoist,Healthcare Medical items
+holdall,1670,holdall,holdall,Holiday and travel
+hollow,1673,hollow,hollow,Descriptive Shape
+honey,1676,honey,honey,Food Ingredients
+hoover,1680,"hoover_,_to",hoover,Building Household tasks
+hose,1683,hose,hose,Tools Garden
+hot,1684,hot,hot,Descriptive Quantity
+house,1690,house,house,Building Residential
+how,1692,how,how,Question
+in,1703,in,in,Descriptive Position
+inbox,1705,inbox,inbox,Computer Icon
+india,1238,flag_India,india,Country Flags
+intellikeys,1712,intellikeys,intellikeys,Communication Aid
+iphone,1715,iPhone,iphone,Electrical Phone
+ipod,1716,iPod,ipod,Electrical Media
+ireland,1242,flag_Ireland,ireland,Country Flags
+italy,1245,flag_Italy,italy,Country Flags
+itch,1727,itch,itch,Healthcare Medical conditions
+ivy,1728,ivy,ivy,Plants and Trees
+jam,1737,jam,jam,Food Sweets and desserts
+jamaica,1247,flag_Jamaica,jamaica,Country Flags
+japan,1248,flag_Japan,japan,Country Flags
+jar,1739,jar,jar,Food Kitchen items
+jeep,1743,jeep,jeep,Transport Road
+jelly,1744,jelly,jelly,Food Sweets and desserts
+jellyfish,1746,jellyfish,jellyfish,Animal Other Invertebrates
+jesus,1747,Jesus,jesus,Religion Person
+judas,1754,Judas,judas,Religion Person
+judo,1755,judo,judo,Sport
+kennel,1764,kennel,kennel,Animal Habitat
+kite,1773,kite,kite,Leisure Toys
+kiwi,1774,kiwi,kiwi,Food Fruit
+lamb,1789,lamb,lamb,Food Meat
+lamp,1791,lamp,lamp,Electrical General
+laptop,1796,laptop,laptop,Electrical Computer
+large,1797,large,large,Descriptive Quantity
+last,1799,last,last,Descriptive Position
+lead,1808,lead,lead,Animal Activity Grooming
+leek,1811,leek,leek,Food Vegetables and salads
+left,1812,left,left,Descriptive Direction
+lens,1823,lens,lens,Science
+lent,1824,Lent,lent,Religion Festival
+lid,1829,lid,lid,Food Kitchen items
+lift,1831,lift,lift,Building Structure
+light,1832,light,light,Descriptive Quantity
+lime,1835,lime,lime,Food Fruit
+little,1847,little,little,Descriptive Quantity
+lizard,1849,lizard,lizard,Animal Reptiles and Amphibians
+log,1851,log,log,Plants and Trees
+long,1853,long,long,Descriptive Quantity
+lost,1859,lost,lost,People Descriptive
+loud,1862,loud,loud,Descriptive State
+lowest,1864,lowest,lowest,Descriptive Position
+lucky,1865,lucky,lucky,Descriptive State
+lump,1866,lump,lump,Healthcare Medical conditions
+manger,1887,manger,manger,Religion General
+marmite,1891,marmite,marmite,Food Ingredients
+mars,1894,Mars,mars,Science Astronomy
+mary,1896,Mary,mary,Religion Person
+maths,1905,maths,maths,Work and School Subjects
+meat,1914,meat,meat,Food Meat
+medal,1916,medal,medal,Sport Accessories
+mend,1923,mend,mend,Descriptive State
+menu,1925,menu,menu,Food Meals and snacks
+mexico,1276,flag_Mexico,mexico,Country Flags
+middle,1934,middle,middle,Descriptive Position
+milk,1935,milk,milk,Drink Type
+mints,1951,mints,mints,Food Sweets and desserts
+minute,1952,minute,minute,Descriptive Time
+money,1972,money,money,Money
+moon,1974,Moon,moon,Science Astronomy
+mop,1975,mop,mop,Building Contents
+more,1977,more,more,Descriptive Quantity
+morning,1978,morning,morning,Descriptive Time
+morocco,1283,flag_Morocco,morocco,Country Flags
+most,1979,most,most,Descriptive Quantity
+moth,1980,moth,moth,Animal Spiders and Insects
+music,1996,music,music,Work and School Subjects
+nail,2008,nail,nail,Tools Workshop
+nappy,2014,nappy,nappy,Healthcare Grooming items
+nativity,2015,Nativity,nativity,Religion Festival
+near,2016,near,near,Descriptive Position
+neither,2021,neither,neither,Descriptive Quantity
+nest,2023,nest,nest,Animal Habitat
+newspaper,2027,newspaper,newspaper,Work and School Education
+next,2032,next,next,Descriptive Position
+nigeria,1294,flag_Nigeria,nigeria,Country Flags
+night,2035,night,night,Descriptive Time
+noisy,2043,noisy,noisy,Descriptive State
+noodles,2046,noodles,noodles,Food Pastas and rice
+north,2047,north,north,Descriptive Direction
+now,2054,now,now,Descriptive Time
+nuts,2059,nuts,nuts,Food Nuts
+octagon,2067,octagon,octagon,Descriptive Shape
+off,2068,off,off,Descriptive Position
+omelette,2080,omelette,omelette,Food Eggs
+on,2081,on,on,Descriptive Position
+one,2082,one,one,Number
+open,2089,open,open,Descriptive State
+opposite,2095,opposite,opposite,Descriptive Position
+out,2102,out,out,Descriptive Direction
+outside,2104,outside,outside,Descriptive Position
+oval,2105,oval,oval,Descriptive Shape
+over,2106,over,over,Descriptive Position
+owl,2107,owl,owl,Animal Birds
+pakistan,1302,flag_Pakistan,pakistan,Country Flags
+paper,2129,paper,paper,Work and School Stationery
+parachute,2134,parachute,parachute,Transport Air
+parallelogram,2137,parallelogram,parallelogram,Descriptive Shape
+part,2145,part,part,Descriptive Quantity
+past,2152,past,past,Descriptive Time
+pasta,2153,pasta,pasta,Food Pastas and rice
+pate,2159,pate,pate,Food Meals and snacks
+paw,2160,paw,paw,Animal Features
+pe,2162,PE,pe,Work and School Subjects
+pea,2164,pea,pea,Food Vegetables and salads
+pear,2170,pear,pear,Food Fruit
+peas,2171,peas,peas,Food Vegetables and salads
+pecan,2172,pecan,pecan,Food Nuts
+pen,2176,pen,pen,Work and School Stationery
+pentagon,2188,pentagon,pentagon,Descriptive Shape
+perm,2193,"perm_,_to",perm,Healthcare Grooming activities
+permeable,2194,permeable,permeable,Science Eco
+photocopier,2206,photocopier,photocopier,Building Equipment and devices
+piano,2212,piano,piano,Music Instrument
+pie,2217,pie,pie,Food Breads and baking
+pink,2231,pink,pink,Art Colour
+pint,2234,pint,pint,Drink Containers and measures
+point,2270,"point_,_to",point,Descriptive Direction
+pointed,2271,pointed,pointed,Descriptive Shape
+poland,1311,flag_Poland,poland,Country Flags
+pond,2279,pond,pond,Building Garden and farm
+portugal,1312,flag_Portugal,portugal,Country Flags
+pot,2298,pot,pot,Tools Garden
+poultry,2304,poultry,poultry,Food Poultry
+prawn,2309,prawn,prawn,Animal Crustacean and Molluscs
+pray,2310,"pray_,_to",pray,Religion General
+printer,2318,printer,printer,Electrical Computer
+protein,2321,protein,protein,Food Diet
+purse,2334,purse,purse,Clothes Accessories
+quadrilateral,2344,quadrilateral,quadrilateral,Descriptive Shape
+quarter,2346,quarter,quarter,Descriptive Quantity
+rain,2355,rain,rain,Environment Weather
+rainbow,2356,rainbow,rainbow,Environment Weather
+rake,2360,rake,rake,Tools Garden
+ramp,2362,ramp,ramp,Healthcare Medical items
+ravioli,2366,ravioli,ravioli,Food Pastas and rice
+rectangle,2375,rectangle,rectangle,Descriptive Shape
+red,2379,red,red,Art Colour
+retire,2389,"retire_,_to",retire,People Actions
+rhombus,2392,rhombus,rhombus,Descriptive Shape
+rice,2395,rice,rice,Food Pastas and rice
+rifle,2400,rifle,rifle,Military
+right,2401,right,right,Descriptive Direction
+ring,2404,ring,ring,Clothes Jewellery
+risen,2406,risen,risen,Religion Festival
+road,2407,road,road,Holiday and travel
+rocket,2410,rocket,rocket,Transport Space
+room,2419,room,room,Building Public
+rosette,2422,rosette,rosette,Sport Accessories
+rug,2426,rug,rug,Building Contents
+run,2428,"run_,_to",run,Sport
+sack,2431,sack,sack,Celebration Item
+saddle,2434,saddle,saddle,Animal Activity Grooming
+salad,2440,salad,salad,Food Vegetables and salad
+salty,2446,salty,salty,Food Feeding and eating
+same,2447,same,same,Descriptive Quantity
+save,2473,save,save,Computer Icon
+saw,2474,saw,saw,Tools Workshop
+school,2483,school,school,Building School
+scotland,1327,flag_Scotland,scotland,Country Flags
+seal,2498,seal,seal,Animal Fish and Marine mammals
+second,2500,second,second,Descriptive Time
+shallow,2526,shallow,shallow,Descriptive Quantity
+shapes,2531,shapes,shapes,Descriptive Shape
+sharp,2533,sharp,sharp,Descriptive Shape
+shave,2534,"shave_,_to",shave,Healthcare Grooming activities
+shells,2539,shells,shells,Science Eco
+shiny,2543,shiny,shiny,Descriptive State
+shop,2548,shop,shop,Building Shop
+shrimp,2561,shrimp,shrimp,Food Fish and seafood
+side,2564,side,side,Descriptive Position
+sister,2578,sister,sister,People Relationship
+six,2581,six,six,Number
+ski,2588,"ski_,_to",ski,Sport
+skis,2591,skis,skis,Sport Accessories
+slice,2597,slice,slice,Descriptive Shape
+slide,2598,slide,slide,Leisure Playground
+sling,2599,sling,sling,Healthcare Medical items
+slowly,0,tortoise,slowly,Animal Reptiles and Amphibians
+slug,2602,slug,slug,Animal Crustacean and Molluscs
+snail,2605,snail,snail,Animal Crustacean and Molluscs
+snake,2606,snake,snake,Animal Reptiles and Amphibians
+snow,2610,snow,snow,Environment Weather
+soap,2611,soap,soap,Healthcare Grooming items
+soft,2613,soft,soft,Descriptive State
+some,2619,some,some,Descriptive Quantity
+son,2620,son,son,People Relationship
+soup,2621,soup,soup,Food Meals and snacks
+sour,2629,sour,sour,Food Feeding and eating
+south,2631,south,south,Descriptive Direction
+spaceship,2635,spaceship,spaceship,Transport Space
+spain,1341,flag_Spain,spain,Country Flags
+speak,0,non_speaking,speak,People Descriptive
+spicy,2646,spicy,spicy,Food Feeding and eating
+spotty,2655,spotty,spotty,Descriptive State
+spring,2658,spring,spring,Descriptive Time
+square,2661,square,square,Descriptive Shape
+stable,2668,stable,stable,Animal Habitat
+star,2676,star,star,Science Astronomy
+starfish,2679,starfish,starfish,Animal Other Invertebrates
+sticky,2696,sticky,sticky,Descriptive State
+stock,2703,stock,stock,Food Ingredients
+stool,2709,stool,stool,Building Furniture
+straight,2710,straight,straight,Descriptive Shape
+striped,2716,striped,striped,Descriptive State
+stroke,2717,"stroke_,_to",stroke,Animal Activity Grooming
+subsoil,2721,subsoil,subsoil,Science Eco
+sum,2730,sum,sum,Number Activity
+summer,2731,summer,summer,Descriptive Time
+sun,2732,sun,sun,Descriptive Time
+sweden,1348,flag_Sweden,sweden,Country Flags
+swing,2751,swing,swing,Leisure Playground
+switzerland,1349,flag_Switzerland,switzerland,Country Flags
+table,2763,table,table,Building Furniture
+tall,2777,tall,tall,People Descriptive
+tap,2779,tap,tap,Healthcare Grooming items
+tart,2782,tart,tart,Food Sweets and desserts
+tea,2795,tea,tea,Drink Type
+ten,2813,ten,ten,Number
+test,2816,test,test,Work and School Education
+thanks,0,happy_man,thanks,People Feelings
+thick,2823,thick,thick,Descriptive Quantity
+through,2838,through,through,Descriptive Direction
+tie,2843,tie,tie,Clothes General
+time,0,clock,time,Electrical General
+tin,2849,tin,tin,Food Kitchen items
+toad,2865,toad,toad,Animal Reptiles and Amphibians
+today,2868,today,today,Descriptive Time
+toilet,2870,toilet,toilet,Healthcare Grooming items
+toilets,2873,toilets,toilets,Communication Signs
+tomorrow,2879,tomorrow,tomorrow,Descriptive Time
+top,2887,top,top,Descriptive Position
+topsoil,2889,topsoil,topsoil,Science Eco
+torch,2890,torch,torch,Electrical General
+tracksuit,2903,tracksuit,tracksuit,Clothes Sport
+train,2906,train,train,Transport Rail
+trap,2911,trap,trap,Animal Activity Misc
+trapezium,2912,trapezium,trapezium,Descriptive Shape
+travel,2913,travel,travel,Holiday and travel
+tuna,2930,tuna,tuna,Food Fish and seafood
+turkey,1370,flag_Turkey,turkey,Country Flags
+two,2943,two,two,Number
+untie,2960,"untie_,_to",untie,Healthcare Grooming activities
+up,2961,up,up,Descriptive Direction
+van,2972,van,van,Transport Road
+vinegar,2984,vinegar,vinegar,Food Ingredients
+wales,1389,flag_Wales,wales,Country Flags
+wall,3002,wall,wall,Building Structure
+walrus,3005,walrus,walrus,Animal Fish and Marine mammals
+watch,3021,watch,watch,Clothes Jewellery
+wavy,3031,wavy,wavy,Descriptive Shape
+webcam,3035,webcam,webcam,Electrical Computer
+week,3037,week,week,Descriptive Time
+weekend,3039,weekend,weekend,Descriptive Time
+weigh,3040,"weigh_,_to",weigh,Descriptive Quantity
+west,3042,west,west,Descriptive Direction
+wet,3043,wet,wet,Descriptive State
+what,3045,what,what,Question
+whiteboard,3061,whiteboard,whiteboard,Building Equipment and devices
+who,3062,who,who,Question
+whole,3063,whole,whole,Descriptive Quantity
+why,3064,why,why,Question
+wife,3065,wife,wife,People Relationship
+wii,3068,Wii,wii,Electrical Media
+wine,3072,wine,wine,Drink Type
+winter,3075,winter,winter,Descriptive Time
+wishbone,3078,wishbone,wishbone,Food Poultry
+work,3087,"work_,_to",work,Tools Actions
+worksheet,3089,worksheet,worksheet,Work and School Education
+wrap,3093,"wrap_,_to",wrap,Celebration Event
+xray,3101,xray,xray,Healthcare Medical items
+yesterday,3106,yesterday,yesterday,Descriptive Time
+yogurt,3107,yogurt,yogurt,Food Dairy
+zip,3119,zip,zip,Clothes Accessories

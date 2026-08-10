@@ -49,4 +49,7 @@ enum AppLinks {
 
     /// UK registered charity number, shown alongside the donation link.
     static let charityNumber = "1176125"
+
+    static let mulberrySymbols = URL(string: "https://mulberrysymbols.org")!
+    static let ccLicense = URL(string: "https://creativecommons.org/licenses/by-sa/4.0/")!
 }

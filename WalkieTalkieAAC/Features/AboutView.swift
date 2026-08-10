@@ -190,6 +190,39 @@ struct AboutView: View {
                 Text("Your badges stay on this phone. There is no account, no server and no tracking.")
                     .signageFooter()
             }
+
+            Section {
+                Link(destination: AppLinks.mulberrySymbols) {
+                    SignageRow(
+                        title: "Mulberry Symbols",
+                        subtitle: "Symbols by Garry Paxton / Steve Lee, CC BY-SA 4.0",
+                        systemIcon: "photo.on.rectangle.angled",
+                        tint: SignagePalette.routeGreen
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+
+                Link(destination: AppLinks.ccLicense) {
+                    SignageRow(
+                        title: "Creative Commons Licence",
+                        subtitle: "CC BY-SA 4.0",
+                        systemIcon: "doc.plaintext.fill",
+                        tint: SignagePalette.routeGreen
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+            } header: {
+                PlatformHeader(
+                    text: "Symbols",
+                    systemIcon: "photo.stack.fill",
+                    tint: SignagePalette.routeGreen
+                )
+            } footer: {
+                Text("Mulberry Symbols v3.6.0. Over 500 curated picture symbols for communication.")
+                    .signageFooter()
+            }
         }
         .listStyle(.plain)
         .signageContentWidth()

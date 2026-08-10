@@ -11,17 +11,23 @@
 //  the transcript is small and secondary, the picture is the screen, and
 //  words with no picture simply show nothing rather than flagging a miss.
 //
+//  Phase 5: toolbar button opens the Symbol Library for manual symbol
+//  selection alongside the speech-driven one.
+//
 
 import SwiftUI
 
 struct SymbolSpeakView: View {
     @StateObject private var recognizer = SpeechRecognizer()
     @State private var rotation: Double = 0
+    @State private var showLibrary = false
+    @State private var manualAssetName: String? = nil
+    @State private var manualWord: String? = nil
 
     @AppStorage(SettingsKeys.facesOutward) private var facesOutward = true
 
     private var assetName: String? {
-        SymbolLibrary.assetName(for: recognizer.latestWord)
+        manualAssetName ?? SymbolLibrary.assetName(for: recognizer.latestWord)
     }
 
     var body: some View {
@@ -34,7 +40,13 @@ struct SymbolSpeakView: View {
         .navigationTitle("Symbol Speak")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button {
+                    showLibrary = true
+                } label: {
+                    Label("Symbols", systemImage: "square.grid.3x3.fill")
+                }
+
                 Button {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         rotation = (rotation + 180).truncatingRemainder(dividingBy: 360)
@@ -44,8 +56,17 @@ struct SymbolSpeakView: View {
                 }
             }
         }
-        .onAppear { rotation = facesOutward ? 180 : 0 }
-        .onDisappear { recognizer.stopTranscribing() }
+        .onAppear {
+            rotation = facesOutward ? 180 : 0
+            subscribeToSymbolSelection()
+        }
+        .onDisappear {
+            recognizer.stopTranscribing()
+            unsubscribeFromSymbolSelection()
+        }
+        .sheet(isPresented: $showLibrary) {
+            SymbolLibraryView()
+        }
         .alert(
             "Cannot listen",
             isPresented: Binding(
@@ -57,6 +78,26 @@ struct SymbolSpeakView: View {
         } message: {
             Text(recognizer.errorMessage ?? "")
         }
+    }
+
+    // MARK: - Manual symbol selection via NotificationCenter
+
+    private func subscribeToSymbolSelection() {
+        NotificationCenter.default.addObserver(
+            forName: .init("SymbolSelected"),
+            object: nil,
+            queue: .main
+        ) { notification in
+            if let assetName = notification.userInfo?["assetName"] as? String {
+                manualAssetName = assetName
+                manualWord = notification.userInfo?["word"] as? String
+                recognizer.stopTranscribing()
+            }
+        }
+    }
+
+    private func unsubscribeFromSymbolSelection() {
+        NotificationCenter.default.removeObserver(self, name: .init("SymbolSelected"), object: nil)
     }
 
     // MARK: - The outward display
@@ -71,15 +112,10 @@ struct SymbolSpeakView: View {
                     Image(assetName)
                         .resizable()
                         .scaledToFit()
-                        // Proportional rather than a fixed 260pt, so the
-                        // symbol grows with the screen it is shown on.
                         .frame(maxHeight: max(geometry.size.height * 0.42, 180))
                         .padding(.horizontal, 30)
                         .transition(.scale.combined(with: .opacity))
                 } else if !recognizer.latestWord.isEmpty {
-                    // No picture for this word. Show the word itself rather
-                    // than an error — a blank screen mid-sentence reads as a
-                    // fault, and the word is still useful.
                     Text(recognizer.latestWord)
                         .font(.appDisplay(AppFont.displaySize(
                             fillingWidth: geometry.size.width, factor: 0.31
@@ -113,11 +149,14 @@ struct SymbolSpeakView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(displayWord.map { "Showing \($0)" } ?? "Nothing showing yet")
+        .onChange(of: recognizer.latestWord) { _ in
+            manualAssetName = nil
+            manualWord = nil
+        }
     }
 
     private var displayWord: String? {
-        guard assetName != nil else { return nil }
-        return recognizer.latestWord
+        manualWord ?? (assetName != nil ? recognizer.latestWord : nil)
     }
 
     // MARK: - Transcript
@@ -156,6 +195,8 @@ struct SymbolSpeakView: View {
                 tint: SignagePalette.concrete
             ) {
                 recognizer.clear()
+                manualAssetName = nil
+                manualWord = nil
             }
         }
         .padding(.horizontal, 20)
