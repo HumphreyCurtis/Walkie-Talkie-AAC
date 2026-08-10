@@ -12,14 +12,26 @@
 
 import Foundation
 
+enum BadgeDisplayMode: String, Codable, CaseIterable, Hashable {
+    case wholeMessage
+    case wordByWord
+
+    var title: String {
+        switch self {
+        case .wholeMessage: "Whole message"
+        case .wordByWord: "One word at a time"
+        }
+    }
+}
+
 struct Badge: Identifiable, Codable, Hashable {
     var id = UUID()
 
     /// One or two words. What the wearer scans for in the list.
     var label: String
 
-    /// The full message shown outward and spoken aloud. Shown one word at a
-    /// time at display size, so length is not a problem.
+    /// The full message shown outward and spoken aloud. The badge decides
+    /// whether it stays whole or advances one word at a time.
     var displayText: String
 
     /// SF Symbol name, shown when `emoji` is empty.
@@ -33,6 +45,13 @@ struct Badge: Identifiable, Codable, Hashable {
 
     /// BCP 47 tag. `nil` follows the device language.
     var languageCode: String?
+
+    /// How the outward-facing message is presented.
+    var displayMode: BadgeDisplayMode
+
+    /// A multiplier applied after the display has found the largest fitting
+    /// type size. One is the largest safe size; smaller values leave more air.
+    var textScale: Double
 
     /// Filename of a photo used as the badge's background, stored alongside
     /// `Badges.json`. `nil` means the badge shows its colour.
@@ -50,6 +69,8 @@ struct Badge: Identifiable, Codable, Hashable {
         emoji: String? = nil,
         colorName: String? = nil,
         languageCode: String? = nil,
+        displayMode: BadgeDisplayMode = .wholeMessage,
+        textScale: Double = 1,
         backgroundImageName: String? = nil
     ) {
         self.id = id
@@ -59,15 +80,32 @@ struct Badge: Identifiable, Codable, Hashable {
         self.emoji = emoji
         self.colorName = colorName
         self.languageCode = languageCode
+        self.displayMode = displayMode
+        self.textScale = min(max(textScale, 0.6), 1)
         self.backgroundImageName = backgroundImageName
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, label, displayText, systemIcon, emoji, colorName
+        case languageCode, displayMode, textScale, backgroundImageName
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        label = try values.decode(String.self, forKey: .label)
+        displayText = try values.decode(String.self, forKey: .displayText)
+        systemIcon = try values.decodeIfPresent(String.self, forKey: .systemIcon) ?? "text.bubble.fill"
+        emoji = try values.decodeIfPresent(String.self, forKey: .emoji)
+        colorName = try values.decodeIfPresent(String.self, forKey: .colorName)
+        languageCode = try values.decodeIfPresent(String.self, forKey: .languageCode)
+        displayMode = try values.decodeIfPresent(BadgeDisplayMode.self, forKey: .displayMode) ?? .wholeMessage
+        textScale = min(max(try values.decodeIfPresent(Double.self, forKey: .textScale) ?? 1, 0.6), 1)
+        backgroundImageName = try values.decodeIfPresent(String.self, forKey: .backgroundImageName)
     }
 }
 
 enum BadgeLibrary {
-    /// The hidden-disability badge. Kept separate because showing it is an
-    /// explicit opt-in rather than a badge like any other.
-    static let sunflowerIcon = "camera.macro"
-
     static let defaults: [Badge] = [
         Badge(
             label: "Help",
@@ -125,6 +163,14 @@ enum BadgeLibrary {
         ),
     ]
 
+    static let sunflower = Badge(
+        label: "Sunflower",
+        displayText: "Please be patient with me.",
+        systemIcon: "camera.macro",
+        emoji: "🌻",
+        colorName: "green"
+    )
+
     /// Added at seed version 2. Non-English examples, to make it obvious in
     /// the editor that a badge can carry its own language.
     static let multilingualExamples: [Badge] = [
@@ -151,7 +197,6 @@ enum SettingsKeys {
     static let prefersFemaleVoice = "prefersFemaleVoice"
     static let speechRate = "speechRate"
     static let wordInterval = "wordInterval"
-    static let showsSunflowerBadge = "showsSunflowerBadge"
     static let facesOutward = "facesOutward"
 }
 

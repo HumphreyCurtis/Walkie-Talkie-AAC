@@ -35,22 +35,28 @@ struct SettingsView: View {
                 .padding(.horizontal, 14)
                 .signageRowStyle()
 
-                Toggle(isOn: $settings.showsSunflowerBadge) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Hidden disability button")
-                            .font(.appHeadline)
-                        Text("Adds a sunflower button to every badge")
-                            .font(.appFootnote)
-                            .foregroundStyle(SignagePalette.concrete.color)
-                    }
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 14)
-                .signageRowStyle()
             } header: {
                 PlatformHeader(text: "Display", systemIcon: "rectangle.on.rectangle", tint: tint)
             } footer: {
-                Text("The hidden disability button is off to start with. Telling people about a disability is your choice to make.")
+                Text("Turn this off when you want to hold the phone normally instead of wearing it facing outward.")
+                    .signageFooter()
+            }
+
+            Section {
+                // The stored value is a duration, so invert the binding: right
+                // is faster, matching the speaking-speed slider below.
+                slider(
+                    title: "Word-by-word speed",
+                    value: Binding(
+                        get: { WordPace.slowest + WordPace.fastest - settings.wordInterval },
+                        set: { settings.wordInterval = WordPace.slowest + WordPace.fastest - $0 }
+                    ),
+                    range: WordPace.fastest...WordPace.slowest
+                )
+            } header: {
+                PlatformHeader(text: "Word display", systemIcon: "textformat.size", tint: tint)
+            } footer: {
+                Text("How long each word stays on a one-word-at-a-time badge before the next one.")
                     .signageFooter()
             }
 
@@ -82,26 +88,6 @@ struct SettingsView: View {
                 .signageRowStyle()
             } header: {
                 PlatformHeader(text: "Voice", systemIcon: "waveform", tint: tint)
-            }
-
-            Section {
-                // The stored value is a duration, so a raw slider would run
-                // backwards: dragging right would make it slower. Inverting
-                // the binding keeps both sliders on this page pointing the
-                // same way — right is faster.
-                slider(
-                    title: "Attention word speed",
-                    value: Binding(
-                        get: { WordPace.slowest + WordPace.fastest - settings.wordInterval },
-                        set: { settings.wordInterval = WordPace.slowest + WordPace.fastest - $0 }
-                    ),
-                    range: WordPace.fastest...WordPace.slowest
-                )
-            } header: {
-                PlatformHeader(text: "Badges", systemIcon: "textformat.size", tint: tint)
-            } footer: {
-                Text("How long each word stays on the Attention screen before the next one.")
-                    .signageFooter()
             }
         }
         .listStyle(.plain)

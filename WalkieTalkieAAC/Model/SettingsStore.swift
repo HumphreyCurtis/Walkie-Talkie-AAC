@@ -2,7 +2,7 @@
 //  SettingsStore.swift
 //  Walkie Talkie AAC
 //
-//  Four preferences, mirrored into UserDefaults so that views can read them
+//  Preferences mirrored into UserDefaults so that views can read them
 //  with @AppStorage and non-view code (Speaker, WordPace) can read them
 //  directly without holding a reference to the store.
 //
@@ -26,15 +26,6 @@ final class SettingsStore {
         didSet { defaults.set(wordInterval, forKey: SettingsKeys.wordInterval) }
     }
 
-    /// Whether the hidden-disability badge appears on display views.
-    ///
-    /// Off by default, and it stays that way. Disclosing a disability to a
-    /// carriage full of strangers is the wearer's decision to make
-    /// deliberately, not something an app should switch on for them.
-    var showsSunflowerBadge: Bool {
-        didSet { defaults.set(showsSunflowerBadge, forKey: SettingsKeys.showsSunflowerBadge) }
-    }
-
     /// Whether badges open rotated 180° to face the person opposite.
     ///
     /// On by default: the phone is worn on a lanyard with the screen facing
@@ -50,13 +41,11 @@ final class SettingsStore {
             SettingsKeys.speechRate: Speaker.defaultRate,
             SettingsKeys.wordInterval: WordPace.default,
             SettingsKeys.facesOutward: true,
-            SettingsKeys.showsSunflowerBadge: false,
         ])
 
         prefersFemaleVoice = defaults.bool(forKey: SettingsKeys.prefersFemaleVoice)
         speechRate = defaults.double(forKey: SettingsKeys.speechRate)
         wordInterval = defaults.double(forKey: SettingsKeys.wordInterval)
-        showsSunflowerBadge = defaults.bool(forKey: SettingsKeys.showsSunflowerBadge)
         facesOutward = defaults.bool(forKey: SettingsKeys.facesOutward)
     }
 }

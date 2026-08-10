@@ -23,14 +23,14 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
-                Text("Walkie Talkie turns your phone into a sign. Wear it on a lanyard, facing outward, and show a message to the person you are talking to in type that is big enough to read at a glance.")
+                Text("Walkie Talkie turns your phone into a sign. Show a message to the person you are talking to in type that is big enough to read at a glance, whether speech is difficult or you use different languages.")
                     .font(.appBody)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 14)
                     .signageRowStyle()
 
-                Text("It is a safety net for when talking breaks down, not a replacement for your voice. Nothing speaks unless you press it.")
+                Text("It supports a conversation without taking it over. Nothing speaks unless you press it, and every badge uses the words and language you choose.")
                     .font(.appBody)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.vertical, 10)
@@ -38,6 +38,81 @@ struct AboutView: View {
                     .signageRowStyle()
             } header: {
                 PlatformHeader(text: "What this is", systemIcon: "info.circle.fill", tint: tint)
+            }
+
+            Section {
+                ForEach(AphasiaInfo.explainers, id: \.self) { line in
+                    AboutSpeakableRow(text: line, tint: SignagePalette.routeGreen)
+                        .signageRowStyle()
+                }
+            } header: {
+                PlatformHeader(
+                    text: "What is aphasia?",
+                    systemIcon: "person.fill.questionmark",
+                    tint: SignagePalette.routeGreen
+                )
+            } footer: {
+                Text("Tap a sentence to say it out loud.")
+                    .signageFooter()
+            }
+
+            Section {
+                ForEach(Array(AphasiaInfo.tips.enumerated()), id: \.offset) { index, tip in
+                    AboutSpeakableRow(
+                        text: tip,
+                        prefix: "\(index + 1).",
+                        tint: SignagePalette.routeGreen
+                    )
+                    .signageRowStyle()
+                }
+
+                Button {
+                    Speaker.shared.speak(AphasiaInfo.tipsSpokenText)
+                } label: {
+                    SignageRow(
+                        title: "Say all of them",
+                        systemIcon: "speaker.wave.3.fill",
+                        tint: SignagePalette.routeGreen
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+            } header: {
+                PlatformHeader(
+                    text: "How to talk with me",
+                    systemIcon: "bubble.left.and.bubble.right.fill",
+                    tint: SignagePalette.routeGreen
+                )
+            }
+
+            Section {
+                Link(destination: AphasiaInfo.learnMoreURL) {
+                    SignageRow(
+                        title: "Read about aphasia",
+                        subtitle: "Stroke Association",
+                        systemIcon: "safari.fill",
+                        tint: SignagePalette.routeGreen
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+
+                Link(destination: AphasiaInfo.reconnectURL) {
+                    SignageRow(
+                        title: "Aphasia Re-Connect",
+                        subtitle: "Groups, support and community",
+                        systemIcon: "person.3.fill",
+                        tint: SignagePalette.routeGreen
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+            } header: {
+                PlatformHeader(
+                    text: "Aphasia support",
+                    systemIcon: "arrow.up.forward.app",
+                    tint: SignagePalette.routeGreen
+                )
             }
 
             Section {
@@ -120,6 +195,44 @@ struct AboutView: View {
         .signageSurface()
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct AboutSpeakableRow: View {
+    let text: String
+    var prefix: String?
+    let tint: SignColor
+
+    var body: some View {
+        Button {
+            Speaker.shared.speak(text)
+        } label: {
+            HStack(spacing: 10) {
+                if let prefix {
+                    Text(prefix)
+                        .font(.appHeadline)
+                        .foregroundStyle(tint.color)
+                        .frame(minWidth: 22, alignment: .leading)
+                }
+
+                Text(text)
+                    .font(.appBody)
+                    .foregroundStyle(.primary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "speaker.wave.2")
+                    .font(.appFootnote)
+                    .foregroundStyle(SignagePalette.concrete.color)
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 56)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(text)
+        .accessibilityHint("Double tap to say this out loud")
     }
 }
 

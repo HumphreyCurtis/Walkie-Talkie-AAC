@@ -1,31 +1,6 @@
-//
-//  DisplayView.swift
-//  Walkie Talkie AAC
-//
-//  The badge itself: a full-screen sign, worn on a lanyard or an arm strap
-//  and read by the person opposite.
-//
-//  The whole message is on screen at once, wrapped over as many lines as it
-//  needs, sized to fill the display. Not one word at a time — that is the
-//  Attention screen's job, for when you need to be noticed. A badge is
-//  something someone reads at their own pace while you stand there, so it has
-//  to still be there while they read it.
-//
-//  It is rotated 180° by default. The phone hangs with the screen facing away
-//  from the wearer, so "the right way up" is upside down from where they are
-//  standing.
-//
-//  The background is a colour or a photo. The photo is not decoration: a
-//  co-designer held his phone against a striped shirt so the badge vanished
-//  into what he was wearing. Being able to make the device disappear matters
-//  as much as being able to make it shout, and both are the wearer's call.
-//
-//  Tapping anywhere speaks it. Never automatically — the display is meant to
-//  scaffold the wearer's own voice, not replace it with a synthetic one.
-//
-
 import PhotosUI
 import SwiftUI
+import UIKit
 
 struct DisplayView: View {
     let badge: Badge
@@ -35,12 +10,12 @@ struct DisplayView: View {
     @State private var isBlackedOut = false
     @State private var backgroundImage: UIImage?
     @State private var showingCamera = false
-    @State private var showingColours = false
     @State private var pickerItem: PhotosPickerItem?
+    @State private var sequenceStartedAt = Date()
 
     @Environment(\.dismiss) private var dismiss
     @AppStorage(SettingsKeys.facesOutward) private var facesOutward = true
-    @AppStorage(SettingsKeys.showsSunflowerBadge) private var showsSunflower = false
+    @AppStorage(SettingsKeys.wordInterval) private var wordInterval = WordPace.default
 
     private let store = BadgeStore.shared
 
@@ -50,12 +25,15 @@ struct DisplayView: View {
     }
 
     private var tint: SignColor { BadgeColor.sign(named: current.colorName) }
-
-    /// What the text sits on, which decides whether it is white or ink.
-    /// Over a photo it is always white with a scrim, because the photo could
-    /// be anything.
     private var foreground: Color {
         backgroundImage != nil ? .white : tint.readableForeground
+    }
+    private var words: [String] {
+        let values = current.displayText.split(whereSeparator: \.isWhitespace).map(String.init)
+        return values.isEmpty ? ["—"] : values
+    }
+    private var interval: Double {
+        min(max(wordInterval, WordPace.fastest), WordPace.slowest)
     }
 
     var body: some View {
@@ -73,8 +51,7 @@ struct DisplayView: View {
         .onAppear {
             rotation = facesOutward ? 180 : 0
             backgroundImage = store.image(for: current)
-            // Nobody wants their phone locking mid-sentence while it is being
-            // read by somebody else.
+            sequenceStartedAt = Date()
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear {
@@ -95,16 +72,14 @@ struct DisplayView: View {
                    let image = UIImage(data: data) {
                     apply(photo: image)
                 }
+                pickerItem = nil
             }
         }
     }
 
-    // MARK: - Background
-
     @ViewBuilder
     private var background: some View {
         if isBlackedOut {
-            // A real blackout, not a dimmed screen.
             Color.black.ignoresSafeArea()
         } else if let backgroundImage {
             Image(uiImage: backgroundImage)
@@ -112,10 +87,8 @@ struct DisplayView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
                 .overlay {
-                    // Just enough shading to keep white text legible over an
-                    // unknown photo, without undoing the camouflage.
                     LinearGradient(
-                        colors: [.black.opacity(0.45), .black.opacity(0.15)],
+                        colors: [.black.opacity(0.5), .black.opacity(0.2)],
                         startPoint: .top,
                         endPoint: .bottom
                     )
@@ -126,84 +99,197 @@ struct DisplayView: View {
         }
     }
 
-    // MARK: - The sign face
-
     private var sign: some View {
         GeometryReader { geometry in
-            VStack(alignment: .leading, spacing: 18) {
-                Text(current.displayText)
-                    .font(.appDisplay(textSize(in: geometry.size)))
-                    // As many lines as it takes. A message that has been
-                    // truncated is a message that failed.
-                    .lineLimit(nil)
-                    .minimumScaleFactor(0.25)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                if let emoji = current.emoji, !emoji.isEmpty {
-                    Text(emoji)
-                        .font(.system(size: textSize(in: geometry.size) * 0.9))
+            Group {
+                if current.displayMode == .wordByWord {
+                    TimelineView(.periodic(from: sequenceStartedAt, by: min(interval, 0.25))) { context in
+                        wordLayout(
+                            word: word(at: context.date),
+                            size: CGSize(width: geometry.size.width - 48, height: geometry.size.height * 0.7)
+                        )
+                    }
+                } else {
+                    wholeMessageLayout(
+                        size: CGSize(width: geometry.size.width - 48, height: geometry.size.height * 0.7)
+                    )
                 }
             }
             .foregroundStyle(foreground)
-            .shadow(color: .black.opacity(backgroundImage == nil ? 0 : 0.5), radius: 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 28)
-            .frame(width: geometry.size.width, height: geometry.size.height * 0.82)
+            .shadow(color: .black.opacity(backgroundImage == nil ? 0 : 0.55), radius: 8)
+            .frame(width: geometry.size.width - 48, height: geometry.size.height * 0.7)
+            .position(x: geometry.size.width / 2, y: geometry.size.height * 0.39)
+            .rotationEffect(.degrees(rotation))
         }
-        .rotationEffect(.degrees(rotation))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(current.displayText)
         .accessibilityHint("Double tap to speak this badge")
     }
 
-    /// Sized to the screen and to how much there is to say, so a short message
-    /// fills the sign and a long one still fits.
-    ///
-    /// Proportional to width rather than a fixed point size: a size that fills
-    /// an iPhone leaves a message stranded in the middle of an iPad, and this
-    /// is meant to be read from across a carriage.
-    private func textSize(in size: CGSize) -> CGFloat {
-        let width = max(size.width, 320)
-        let characters = max(current.displayText.count, 1)
+    private func wholeMessageLayout(size: CGSize) -> some View {
+        let isShort = words.count <= 5
+            && current.displayText.count <= 38
+            && size.width > size.height * 0.9
+        let symbolSize = min(size.width * (isShort ? 0.22 : 0.17), size.height * 0.22)
+        let spacing: CGFloat = 18
+        let textArea = CGSize(
+            width: isShort ? max(80, size.width - symbolSize - spacing) : size.width,
+            height: isShort ? size.height : max(80, size.height - symbolSize - spacing)
+        )
+        let fontSize = fittedSize(
+            for: current.displayText,
+            in: textArea,
+            singleLine: false,
+            scale: current.textScale
+        )
 
-        let base: CGFloat
-        switch characters {
-        case ..<12: base = 0.30
-        case ..<25: base = 0.20
-        case ..<45: base = 0.145
-        case ..<80: base = 0.11
-        default: base = 0.085
+        return Group {
+            if isShort {
+                HStack(spacing: spacing) {
+                    if isFacingOutward {
+                        displayText(current.displayText, size: fontSize, singleLine: false)
+                        badgeSymbol(size: symbolSize)
+                    } else {
+                        badgeSymbol(size: symbolSize)
+                        displayText(current.displayText, size: fontSize, singleLine: false)
+                    }
+                }
+            } else {
+                VStack(spacing: spacing) {
+                    if isFacingOutward {
+                        displayText(current.displayText, size: fontSize, singleLine: false)
+                        badgeSymbol(size: symbolSize)
+                    } else {
+                        badgeSymbol(size: symbolSize)
+                        displayText(current.displayText, size: fontSize, singleLine: false)
+                    }
+                }
+            }
         }
-        return width * base
     }
 
-    // MARK: - Controls
+    private func wordLayout(word: String, size: CGSize) -> some View {
+        let symbolSize = min(size.width * 0.18, size.height * 0.18)
+        let textArea = CGSize(width: size.width, height: size.height - symbolSize - 14)
+        // Size every word from the most demanding word so the display does
+        // not jump larger and smaller as the sentence advances.
+        let fontSize = words.map {
+            fittedSize(for: $0, in: textArea, singleLine: true, scale: current.textScale)
+        }.min() ?? 48
+
+        return VStack(spacing: 14) {
+            if isFacingOutward {
+                displayText(word, size: fontSize, singleLine: true)
+                    .id(word)
+                badgeSymbol(size: symbolSize)
+            } else {
+                badgeSymbol(size: symbolSize)
+                displayText(word, size: fontSize, singleLine: true)
+                    .id(word)
+            }
+        }
+    }
+
+    private var isFacingOutward: Bool {
+        abs(rotation.truncatingRemainder(dividingBy: 360)) > 90
+    }
+
+    @ViewBuilder
+    private func badgeSymbol(size: CGFloat) -> some View {
+        if let emoji = current.emoji, !emoji.isEmpty {
+            Text(emoji)
+                .font(.system(size: size * 0.88))
+                .frame(width: size, height: size)
+        } else {
+            Image(systemName: current.systemIcon)
+                .font(.system(size: size * 0.74, weight: .bold))
+                .frame(width: size, height: size)
+        }
+    }
+
+    private func displayText(_ text: String, size: CGFloat, singleLine: Bool) -> some View {
+        Text(text)
+            .font(.appDisplay(size))
+            .lineLimit(singleLine ? 1 : nil)
+            .minimumScaleFactor(0.85)
+            .multilineTextAlignment(.center)
+            .allowsTightening(true)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+    }
+
+    /// Binary-searches the largest DIN size whose measured bounds fit the
+    /// available rectangle. UIFont falls back by glyph, so non-Latin scripts
+    /// are measured with the same fallback iOS uses when SwiftUI draws them.
+    private func fittedSize(
+        for text: String,
+        in available: CGSize,
+        singleLine: Bool,
+        scale: Double
+    ) -> CGFloat {
+        guard available.width > 0, available.height > 0 else { return 24 }
+        var lower: CGFloat = 12
+        var upper: CGFloat = max(available.width, available.height) * 1.2
+
+        for _ in 0..<12 {
+            let candidate = (lower + upper) / 2
+            let font = UIFont(name: AppFont.signage, size: candidate)
+                ?? UIFont.boldSystemFont(ofSize: candidate)
+            let constraint = CGSize(
+                width: available.width,
+                height: singleLine ? .greatestFiniteMagnitude : available.height
+            )
+            let bounds = (text as NSString).boundingRect(
+                with: constraint,
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [.font: font],
+                context: nil
+            )
+            let widestWord = text.split(whereSeparator: \.isWhitespace)
+                .map { token in
+                    (String(token) as NSString).size(withAttributes: [.font: font]).width
+                }
+                .max() ?? 0
+            let fitsHeight = bounds.height <= available.height
+            let fitsWidth = bounds.width <= available.width + 1
+                && widestWord <= available.width + 1
+            if fitsHeight && fitsWidth {
+                lower = candidate
+            } else {
+                upper = candidate
+            }
+        }
+        return max(12, lower * min(max(scale, 0.6), 1))
+    }
+
+    private func word(at date: Date) -> String {
+        // The extra sequence slot repeats the final word once, producing one
+        // additional interval of pause before the sentence starts again.
+        let elapsed = max(0, date.timeIntervalSince(sequenceStartedAt))
+        let index = Int(elapsed / interval) % (words.count + 1)
+        return words[min(index, words.count - 1)]
+    }
 
     private var controls: some View {
-        // Every control takes its colours from what is behind it, so they
-        // stay legible on all eight badge colours, on a photo, and on the
-        // blackout.
         let surface = isBlackedOut
             ? SignagePalette.signInk
             : (backgroundImage != nil ? SignagePalette.signInk : tint)
 
-        return VStack {
+        return VStack(spacing: 10) {
             Spacer()
 
-            HStack(spacing: 8) {
-                ControlButton(systemIcon: "chevron.left", label: "Close", surface: surface) {
+            if !isBlackedOut {
+                appearanceMenu(surface: surface)
+            }
+
+            HStack(spacing: 10) {
+                ControlButton(systemIcon: "chevron.left", label: "Back", surface: surface) {
                     dismiss()
                 }
-
                 ControlButton(
                     systemIcon: "speaker.wave.3.fill",
                     label: "Speak this badge",
                     surface: surface
-                ) {
-                    speak()
-                }
-
+                ) { speak() }
                 ControlButton(
                     systemIcon: "rotate.right.fill",
                     label: "Turn the badge around",
@@ -213,17 +299,6 @@ struct DisplayView: View {
                         rotation = (rotation + 180).truncatingRemainder(dividingBy: 360)
                     }
                 }
-
-                ControlButton(
-                    systemIcon: "paintpalette.fill",
-                    label: "Change the colour",
-                    surface: surface
-                ) {
-                    withAnimation(.easeInOut(duration: 0.2)) { showingColours.toggle() }
-                }
-
-                photoControl(surface: surface)
-
                 ControlButton(
                     systemIcon: isBlackedOut ? "eye.fill" : "eye.slash.fill",
                     label: isBlackedOut ? "Show the badge" : "Hide the badge",
@@ -231,98 +306,55 @@ struct DisplayView: View {
                 ) {
                     withAnimation(.easeInOut(duration: 0.2)) { isBlackedOut.toggle() }
                 }
-
-                if showsSunflower && !isBlackedOut {
-                    ControlButton(
-                        systemIcon: BadgeLibrary.sunflowerIcon,
-                        label: "Hidden disability",
-                        surface: surface
-                    ) {
-                        Speaker.shared.speak("I have a hidden disability.")
-                    }
-                }
-            }
-            .padding(.horizontal, 12)
-
-            if showingColours {
-                colourStrip
             }
         }
+        .padding(.horizontal, 12)
         .padding(.bottom, 20)
     }
 
-    /// Camera when there is no photo, remove when there is. Choosing from the
-    /// library lives in the colour strip, so this stays a single tap for the
-    /// case the study actually showed — holding the phone up to your own
-    /// shirt and shooting it.
-    @ViewBuilder
-    private func photoControl(surface: SignColor) -> some View {
-        if backgroundImage == nil {
-            ControlButton(
-                systemIcon: "camera.fill",
-                label: "Take a background photo",
-                surface: surface
-            ) {
-                showingCamera = true
-            }
-        } else {
-            ControlButton(
-                systemIcon: "photo.badge.minus.fill",
-                label: "Remove the background photo",
-                surface: surface
-            ) {
-                apply(photo: nil)
-            }
-        }
-    }
-
-    private var colourStrip: some View {
-        HStack(spacing: 8) {
-            ForEach(BadgeColor.names, id: \.self) { name in
-                let sign = BadgeColor.sign(named: name)
-                Button {
-                    current.colorName = name
-                    store.update(current)
-                } label: {
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(sign.color)
-                        .frame(height: 44)
-                        // Outlined, or the swatch matching the badge's own
-                        // colour disappears into the background behind it and
-                        // the checkmark floats in mid-air.
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .strokeBorder(foreground.opacity(0.9), lineWidth: 2)
-                        }
-                        .overlay {
-                            if current.colorName == name && backgroundImage == nil {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundStyle(sign.readableForeground)
-                            }
-                        }
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(BadgeColor.routeName(for: name))
-            }
-
-            PhotosPicker(selection: $pickerItem, matching: .images) {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .frame(width: 52, height: 44)
-                    .overlay {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.system(size: 16, weight: .bold))
+    private func appearanceMenu(surface: SignColor) -> some View {
+        Menu {
+            Section("Colour") {
+                ForEach(BadgeColor.names, id: \.self) { name in
+                    Button {
+                        current.colorName = name
+                        store.update(current)
+                    } label: {
+                        Label(
+                            BadgeColor.routeName(for: name),
+                            systemImage: current.colorName == name && backgroundImage == nil
+                                ? "checkmark.circle.fill" : "circle.fill"
+                        )
                     }
+                }
             }
-            .accessibilityLabel("Choose a background photo")
-        }
-        .padding(.horizontal, 12)
-        .padding(.top, 10)
-        .transition(.move(edge: .bottom).combined(with: .opacity))
-    }
 
-    // MARK: - Actions
+            Section("Background photo") {
+                Button { showingCamera = true } label: {
+                    Label("Take a photo", systemImage: "camera.fill")
+                }
+                PhotosPicker(selection: $pickerItem, matching: .images) {
+                    Label("Choose a photo", systemImage: "photo.on.rectangle")
+                }
+                if backgroundImage != nil {
+                    Button(role: .destructive) { apply(photo: nil) } label: {
+                        Label("Remove photo", systemImage: "photo.badge.minus.fill")
+                    }
+                }
+            }
+        } label: {
+            Label("Appearance", systemImage: "ellipsis")
+                .font(.appFootnote)
+                .fontWeight(.semibold)
+                .foregroundStyle(surface.color)
+                .padding(.horizontal, 14)
+                .frame(height: 34)
+                .background(
+                    Capsule().fill(surface.readableForeground.opacity(0.86))
+                )
+        }
+        .accessibilityLabel("Change badge appearance")
+    }
 
     private func apply(photo: UIImage?) {
         current = store.setImage(photo, for: current)
@@ -335,7 +367,5 @@ struct DisplayView: View {
 }
 
 #Preview {
-    NavigationStack {
-        DisplayView(badge: BadgeLibrary.defaults[3])
-    }
+    NavigationStack { DisplayView(badge: BadgeLibrary.defaults[0]) }
 }

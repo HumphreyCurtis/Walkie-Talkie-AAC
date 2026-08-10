@@ -25,7 +25,7 @@ final class BadgeStore {
     /// Existing installs then receive them once, without their own edits
     /// being touched and without re-adding anything they deliberately
     /// deleted more than once.
-    private static let currentSeedVersion = 2
+    private static let currentSeedVersion = 3
 
     private struct Snapshot: Codable {
         var badges: [Badge]
@@ -70,7 +70,7 @@ final class BadgeStore {
     }
 
     private func seedFromDefaults() {
-        badges = BadgeLibrary.defaults + BadgeLibrary.multilingualExamples
+        badges = BadgeLibrary.defaults + [BadgeLibrary.sunflower] + BadgeLibrary.multilingualExamples
         seedVersion = Self.currentSeedVersion
         save()
     }
@@ -81,7 +81,7 @@ final class BadgeStore {
         guard seedVersion < Self.currentSeedVersion else { return }
 
         let existing = Set(badges.map { $0.label.lowercased() })
-        let additions = BadgeLibrary.multilingualExamples
+        let additions = ([BadgeLibrary.sunflower] + BadgeLibrary.multilingualExamples)
             .filter { !existing.contains($0.label.lowercased()) }
 
         badges.append(contentsOf: additions)
@@ -146,7 +146,7 @@ final class BadgeStore {
     }
 
     func restoreDefaults() {
-        _ = replaceAll(BadgeLibrary.defaults + BadgeLibrary.multilingualExamples)
+        _ = replaceAll(BadgeLibrary.defaults + [BadgeLibrary.sunflower] + BadgeLibrary.multilingualExamples)
     }
 
     // MARK: - Background photos

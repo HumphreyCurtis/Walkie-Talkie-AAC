@@ -22,6 +22,8 @@ struct BadgeEditorView: View {
     @State private var emoji = ""
     @State private var colorName = BadgeColor.defaultName
     @State private var languageCode = ""
+    @State private var displayMode: BadgeDisplayMode = .wholeMessage
+    @State private var textScale = 1.0
 
     @Environment(\.dismiss) private var dismiss
     private let store = BadgeStore.shared
@@ -63,6 +65,44 @@ struct BadgeEditorView: View {
             }
 
             Section {
+                Picker("Display style", selection: $displayMode) {
+                    ForEach(BadgeDisplayMode.allCases, id: \.self) { mode in
+                        Text(mode.title).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Letter size")
+                            .font(.appHeadline)
+                        Spacer()
+                        Text(textScale >= 0.99 ? "Largest" : "\(Int(textScale * 100))%")
+                            .font(.appFootnote)
+                            .foregroundStyle(SignagePalette.concrete.color)
+                    }
+
+                    HStack(spacing: 12) {
+                        Image(systemName: "textformat.size.smaller")
+                            .foregroundStyle(SignagePalette.concrete.color)
+                        Slider(value: $textScale, in: 0.6...1, step: 0.05)
+                            .tint(tint.color)
+                            .accessibilityLabel("Letter size")
+                        Image(systemName: "textformat.size.larger")
+                            .foregroundStyle(tint.color)
+                    }
+                }
+                .padding(.vertical, 4)
+            } header: {
+                PlatformHeader(text: "Display", tint: tint)
+            } footer: {
+                Text(displayMode == .wordByWord
+                     ? "Each word fills the screen, then the message repeats."
+                     : "The whole message stays visible for the reader.")
+                    .font(.appFootnote)
+            }
+
+            Section {
                 colorPicker
                 iconPicker
                 TextField("Emoji (optional)", text: $emoji)
@@ -75,14 +115,23 @@ struct BadgeEditorView: View {
             }
 
             Section {
-                TextField("e.g. fr-FR", text: $languageCode)
-                    .font(.appBody)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
+                NavigationLink {
+                    LanguagePickerView(selection: $languageCode)
+                } label: {
+                    HStack {
+                        Text("Spoken language")
+                            .font(.appHeadline)
+                        Spacer()
+                        Text(LanguagePickerView.name(for: languageCode))
+                            .font(.appFootnote)
+                            .foregroundStyle(SignagePalette.concrete.color)
+                            .lineLimit(1)
+                    }
+                }
             } header: {
                 PlatformHeader(text: "Language", tint: tint)
             } footer: {
-                Text("Leave empty to use your phone's language. Set it to speak this badge in another one.")
+                Text("This chooses the voice used when you speak the badge. It does not translate your message.")
                     .font(.appFootnote)
             }
         }
@@ -108,17 +157,30 @@ struct BadgeEditorView: View {
         VStack(spacing: 0) {
             ZStack {
                 tint.color
-                Text(displayText.split(separator: " ").first.map(String.init) ?? "—")
-                    .font(.appDisplay(72))
-                    .minimumScaleFactor(0.3)
-                    .lineLimit(1)
-                    .foregroundStyle(tint.readableForeground)
-                    .padding(.horizontal, 16)
+
+                HStack(spacing: 16) {
+                    if emoji.trimmingCharacters(in: .whitespaces).isEmpty {
+                        Image(systemName: systemIcon)
+                            .font(.system(size: 42, weight: .bold))
+                    } else {
+                        Text(emoji)
+                            .font(.system(size: 42))
+                    }
+
+                    Text(previewText)
+                        .font(.appDisplay(54 * textScale))
+                        .minimumScaleFactor(0.2)
+                        .lineLimit(displayMode == .wordByWord ? 1 : 3)
+                        .multilineTextAlignment(.leading)
+                }
+                .foregroundStyle(tint.readableForeground)
+                .padding(.horizontal, 18)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(height: 140)
+            .frame(height: 160)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
-            Text("How the first word will look")
+            Text(displayMode == .wordByWord ? "How each word will look" : "How the badge will look")
                 .font(.appCaption)
                 .foregroundStyle(SignagePalette.concrete.color)
                 .padding(.top, 8)
@@ -126,6 +188,15 @@ struct BadgeEditorView: View {
         .padding(.vertical, 8)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Preview, \(BadgeColor.routeName(for: colorName))")
+    }
+
+    private var previewText: String {
+        let trimmed = displayText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return "—" }
+        if displayMode == .wordByWord {
+            return trimmed.split(whereSeparator: \.isWhitespace).first.map(String.init) ?? "—"
+        }
+        return trimmed
     }
 
     // MARK: - Pickers
@@ -208,6 +279,8 @@ struct BadgeEditorView: View {
         emoji = badge.emoji ?? ""
         colorName = badge.colorName ?? BadgeColor.defaultName
         languageCode = badge.languageCode ?? ""
+        displayMode = badge.displayMode
+        textScale = badge.textScale
     }
 
     private func save() {
@@ -221,7 +294,10 @@ struct BadgeEditorView: View {
             systemIcon: systemIcon,
             emoji: trimmedEmoji.isEmpty ? nil : trimmedEmoji,
             colorName: colorName,
-            languageCode: trimmedLanguage.isEmpty ? nil : trimmedLanguage
+            languageCode: trimmedLanguage.isEmpty ? nil : trimmedLanguage,
+            displayMode: displayMode,
+            textScale: textScale,
+            backgroundImageName: badge?.backgroundImageName
         )
 
         if badge == nil {

@@ -16,9 +16,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) private var scheme
+
     private enum Feature: Hashable {
-        case badges, attention, symbolSpeak, photoToSpeech
-        case sunflower, search, aphasia, settings, about
+        case badges, symbolSpeak, photoToSpeech
+        case search, settings, about
     }
 
     private struct Destination: Identifiable {
@@ -34,16 +36,9 @@ struct ContentView: View {
         Destination(
             feature: .badges,
             title: "Badges",
-            subtitle: "Show a message to the person in front of you",
+            subtitle: "Show or speak a message in the words you choose",
             systemIcon: "rectangle.stack.fill",
             tint: SignagePalette.motorway
-        ),
-        Destination(
-            feature: .attention,
-            title: "Attention",
-            subtitle: "A large, urgent display when you need to be noticed",
-            systemIcon: "exclamationmark.triangle.fill",
-            tint: SignagePalette.signalRed
         ),
         Destination(
             feature: .symbolSpeak,
@@ -63,25 +58,11 @@ struct ContentView: View {
 
     private let everydayLife: [Destination] = [
         Destination(
-            feature: .sunflower,
-            title: "Slow Sunflower",
-            subtitle: "A quiet display for a hidden disability lanyard",
-            systemIcon: "camera.macro",
-            tint: SignagePalette.amber
-        ),
-        Destination(
             feature: .search,
             title: "Search",
-            subtitle: "Look a word up in pictures, maps or a dictionary",
+            subtitle: "Look up a word in pictures, maps or another language",
             systemIcon: "magnifyingglass",
             tint: SignagePalette.terminal
-        ),
-        Destination(
-            feature: .aphasia,
-            title: "Aphasia Info",
-            subtitle: "Explain aphasia, so you do not have to",
-            systemIcon: "person.fill.questionmark",
-            tint: SignagePalette.routeGreen
         ),
     ]
 
@@ -104,43 +85,71 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    ForEach(speaking) { row(for: $0) }
-                } header: {
-                    PlatformHeader(
-                        text: "Say something",
-                        systemIcon: "dot.radiowaves.left.and.right",
-                        tint: SignagePalette.motorway
-                    )
-                }
+            VStack(spacing: 0) {
+                homeHeader
 
-                Section {
-                    ForEach(everydayLife) { row(for: $0) }
-                } header: {
-                    PlatformHeader(
-                        text: "Out and about",
-                        systemIcon: "figure.walk",
-                        tint: SignagePalette.routeGreen
-                    )
-                }
+                List {
+                    Section {
+                        ForEach(speaking) { row(for: $0) }
+                    } header: {
+                        PlatformHeader(
+                            text: "Say something",
+                            systemIcon: "dot.radiowaves.left.and.right",
+                            tint: SignagePalette.motorway
+                        )
+                    }
 
-                Section {
-                    ForEach(app) { row(for: $0) }
-                } header: {
-                    PlatformHeader(
-                        text: "This app",
-                        systemIcon: "app.badge",
-                        tint: SignagePalette.concrete
-                    )
+                    Section {
+                        ForEach(everydayLife) { row(for: $0) }
+                    } header: {
+                        PlatformHeader(
+                            text: "Find the words",
+                            systemIcon: "character.book.closed.fill",
+                            tint: SignagePalette.routeGreen
+                        )
+                    }
+
+                    Section {
+                        ForEach(app) { row(for: $0) }
+                    } header: {
+                        PlatformHeader(
+                            text: "This app",
+                            systemIcon: "app.badge",
+                            tint: SignagePalette.concrete
+                        )
+                    }
                 }
+                .listStyle(.plain)
+                .signageContentWidth()
+                .signageSurface()
             }
-            .listStyle(.plain)
-            .signageContentWidth()
-            .signageSurface()
-            .navigationTitle("Walkie Talkie")
-            .navigationBarTitleDisplayMode(.large)
+            .background(SignagePalette.surface(scheme).ignoresSafeArea())
+            .toolbar(.hidden, for: .navigationBar)
         }
+    }
+
+    private var homeHeader: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text("Walkie Talkie")
+                .font(.appLargeTitle)
+                .foregroundStyle(SignagePalette.ink(scheme))
+            Text("Show words. Speak them aloud.")
+                .font(.appSubheadline)
+                .foregroundStyle(SignagePalette.concrete.color)
+        }
+        .frame(maxWidth: 640, alignment: .leading)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .padding(.bottom, 14)
+        .background(SignagePalette.surface(scheme))
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(SignagePalette.concrete.color.opacity(0.25))
+                .frame(height: 1)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 
     private func row(for destination: Destination) -> some View {
@@ -161,12 +170,9 @@ struct ContentView: View {
     private func view(for feature: Feature) -> some View {
         switch feature {
         case .badges: BadgesView()
-        case .attention: AttentionView()
         case .symbolSpeak: SymbolSpeakView()
         case .photoToSpeech: PhotoToSpeechView()
-        case .sunflower: SunflowerView()
         case .search: SearchView()
-        case .aphasia: AphasiaInfoView()
         case .settings: SettingsView()
         case .about: AboutView()
         }

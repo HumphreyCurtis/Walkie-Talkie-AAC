@@ -57,14 +57,15 @@ enum BadgeTransfer {
 
         return """
         You are helping someone set up Walkie Talkie AAC, an iPhone app that \
-        turns a phone worn on a lanyard into an outward-facing sign. Each \
-        "badge" is one message shown to the person they are talking to in \
-        large type, and optionally spoken aloud.
+        turns a phone into an outward-facing sign. Each "badge" is one \
+        message shown to the person they are talking to in large type, and \
+        optionally spoken aloud.
 
-        Many users have aphasia after a stroke. Write in short, plain, \
-        respectful sentences. Say please and thank you. Write from the \
-        wearer's point of view ("Please talk slowly"), never about them. Do \
-        not write anything self-deprecating.
+        People use it when speech is difficult, when they communicate in \
+        different languages, or when showing words is simply clearer. Write \
+        short, plain, respectful sentences in the language requested. Say \
+        please and thank you. Write from the wearer's point of view \
+        ("Please talk slowly"), never about them.
 
         Return ONLY a JSON array. No explanation, no markdown fence.
 
@@ -76,6 +77,10 @@ enum BadgeTransfer {
           "colorName"    — one of: \(colours)
           "languageCode" — optional BCP 47 tag, e.g. "fr-FR". Omit for the \
         device language.
+          "displayMode"  — "wholeMessage" or "wordByWord". Use \
+        "wholeMessage" unless the user asks for words one at a time.
+          "textScale"    — optional number from 0.6 to 1.0. Use 1.0 for the \
+        largest lettering.
 
         Here are the badges they have now. Keep the "id" of any you are \
         editing so it updates rather than duplicating; omit "id" for new ones.
@@ -127,6 +132,9 @@ enum BadgeTransfer {
         var colorName: String?
         var color: String?
         var languageCode: String?
+        var displayMode: String?
+        var textScale: Double?
+        var backgroundImageName: String?
     }
 
     static func parse(_ raw: String) throws -> [Badge] {
@@ -185,6 +193,14 @@ enum BadgeTransfer {
         }()
 
         let emoji = raw.emoji?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let displayMode: BadgeDisplayMode = {
+            switch raw.displayMode?.lowercased() {
+            case "wordbyword", "word-by-word", "onewordatatime", "one word at a time":
+                return .wordByWord
+            default:
+                return .wholeMessage
+            }
+        }()
 
         return Badge(
             id: raw.id ?? UUID(),
@@ -193,7 +209,10 @@ enum BadgeTransfer {
             systemIcon: resolvedIcon,
             emoji: (emoji?.isEmpty ?? true) ? nil : emoji,
             colorName: resolvedColour,
-            languageCode: raw.languageCode
+            languageCode: raw.languageCode,
+            displayMode: displayMode,
+            textScale: raw.textScale ?? 1,
+            backgroundImageName: raw.backgroundImageName
         )
     }
 
