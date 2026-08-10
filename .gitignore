@@ -23,3 +23,8 @@ Packages/
 *.mobileprovision
 *.p12
 *.certSigningRequest
+
+# Mulberry Symbols source archive + working tools (raw ~40MB archive, not
+# for the repo — only the curated, generated assets under WalkieTalkieAAC/
+# are meant to ship)
+/mulberry-symbols/
