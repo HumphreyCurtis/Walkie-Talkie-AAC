@@ -53,6 +53,46 @@ struct AboutView: View {
             }
 
             Section {
+                PlatformHeader(
+                    text: "How it was designed",
+                    systemIcon: "person.3.fill",
+                    tint: tint
+                )
+                .signageHeaderRow()
+
+                ResearchImageCard(
+                    assetName: "ResearchPrototypes",
+                    caption: "Paper prototypes explored image-based, lanyard and interdependent AAC.",
+                    accessibilityDescription: "Three sets of handwritten paper prototypes for image-based AAC, a lanyard display and interdependent communication."
+                )
+                .signageRowStyle()
+
+                ResearchImageCard(
+                    assetName: "ResearchSmartbadge",
+                    caption: "Early smartbadges explored discreet ways to make aphasia visible.",
+                    accessibilityDescription: "Two photographs of wearable smartbadge prototypes, including a small badge labelled Stroke Aphasia."
+                )
+                .signageRowStyle()
+
+                ResearchImageCard(
+                    assetName: "ResearchWalkieTalkie",
+                    caption: "Walkie Talkie was tested as an outward-facing wearable display.",
+                    accessibilityDescription: "A participant wearing a smartphone on their arm. Its screen says I have aphasia and have had a stroke."
+                )
+                .signageRowStyle()
+
+                ResearchImageCard(
+                    assetName: "ResearchWorkshop",
+                    caption: "People with aphasia and researchers developed the ideas together in participatory workshops.",
+                    accessibilityDescription: "Workshop participants and researchers seated together around a table with prototype materials."
+                )
+                .signageRowStyle()
+            } footer: {
+                Text("From paper ideas to wearable prototypes, each stage was shaped through making, trying and discussing together.")
+                    .signageFooter()
+            }
+
+            Section {
                 PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
                     .signageHeaderRow()
 
@@ -235,6 +275,32 @@ struct AboutView: View {
         .signageSurface()
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+private struct ResearchImageCard: View {
+    let assetName: String
+    let caption: String
+    let accessibilityDescription: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Image(assetName)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .accessibilityLabel(accessibilityDescription)
+
+            Text(caption)
+                .font(.appFootnote)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 12)
     }
 }
 
