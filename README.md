@@ -5,7 +5,7 @@
 <h1 align="center">Walkie Talkie AAC</h1>
 
 <p align="center">
-  Turn an iPhone into a sign. Wear it on a lanyard and show a message to the person you are talking to.
+  A free, co-designed AAC app that turns an iPhone into a wearable sign for face-to-face conversation.
 </p>
 
 <p align="center">
@@ -13,26 +13,23 @@
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-0078D4"></a>
 </p>
 
-Built from the CHI 2024 paper [_Breaking Badge_](https://dl.acm.org/doi/10.1145/3613904.3642327) (Curtis, Lau and Neate), co-designed with people with aphasia in workshops run with [Aphasia Re-Connect](https://aphasiareconnect.org).
-
-Companion to [Watch Your Language AAC](https://github.com/HumphreyCurtis/Watch-Your-Language-AAC).
-
 <p align="center">
   <img src="docs/images/badges.png" width="270" alt="Badges screen">
   &nbsp;&nbsp;&nbsp;
   <img src="docs/images/seat-request-badge.png" width="270" alt="Seat request badge display">
 </p>
 
+Built from the CHI 2024 paper [_Breaking Badge_](https://dl.acm.org/doi/10.1145/3613904.3642327) (Curtis, Lau and Neate), co-designed with people with aphasia in workshops run with [Aphasia Re-Connect](https://aphasiareconnect.org).
+
 ## What it does
 
-| | |
-|---|---|
-| **Badges** | Messages shown outward in large type. Tap to speak. |
-| **Symbol Speak** | Live speech recognition that shows a picture for the last word said. |
-| **Photo to Speech** | Point the camera at something you cannot find the word for. |
-| **Symbol Library** | Browse, search and favourite 500+ curated picture symbols. |
-| **Search** | Pictures, maps, dictionary, Wikipedia — look something up mid-conversation. |
-| **Aphasia Info** | Tappable sentences explaining aphasia, so you do not have to. |
+- Displays short messages outward in large, readable type — the phone hangs on a lanyard so the person you are talking to can read it.
+- Speaks each message aloud on tap.
+- Recognises live speech and shows a picture for the last word you said.
+- Takes a photo and finds the word for what is in it.
+- Browses, searches and favourites 500+ curated picture symbols.
+- Looks things up in pictures, maps, dictionary, Wikipedia and video mid-conversation.
+- Provides tappable sentences that explain aphasia, so you do not have to.
 
 Badges are rotated 180° by default — the phone hangs facing away from you, so "the right way up" is upside down from where you are standing.
 

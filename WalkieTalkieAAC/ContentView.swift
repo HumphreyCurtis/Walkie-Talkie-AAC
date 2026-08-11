@@ -36,21 +36,21 @@ struct ContentView: View {
         Destination(
             feature: .badges,
             title: "Badges",
-            subtitle: "Show or speak a message in the words you choose",
+            subtitle: "Build and speak messages from badges",
             systemIcon: "rectangle.stack.fill",
             tint: SignagePalette.motorway
         ),
         Destination(
             feature: .symbolSpeak,
             title: "Symbol Speak",
-            subtitle: "Speak, and see the picture for the word",
+            subtitle: "Speech translated into symbols",
             systemIcon: "rectangle.3.group.bubble.fill",
             tint: SignagePalette.diversion
         ),
         Destination(
             feature: .photoToSpeech,
             title: "Photo to Speech",
-            subtitle: "Point the camera at something to find its word",
+            subtitle: "Take a photo to find the word for something",
             systemIcon: "camera.viewfinder",
             tint: SignagePalette.roadworks
         ),
@@ -70,14 +70,14 @@ struct ContentView: View {
         Destination(
             feature: .settings,
             title: "Settings",
-            subtitle: "Voice, speed and how badges face",
+            subtitle: "Voice, speed and badges",
             systemIcon: "gearshape.fill",
             tint: SignagePalette.concrete
         ),
         Destination(
             feature: .about,
             title: "About",
-            subtitle: "The research, and ways to support the app",
+            subtitle: "Research and support",
             systemIcon: "info.circle.fill",
             tint: SignagePalette.tourist
         ),

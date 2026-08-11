@@ -54,7 +54,7 @@ struct SearchView: View {
         ),
         Source(
             title: "Wikipedia",
-            subtitle: "Read about it",
+            subtitle: "Research it",
             systemIcon: "book.fill",
             tint: SignagePalette.tourist,
             template: "https://en.wikipedia.org/wiki/Special:Search?search=%@"
