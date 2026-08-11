@@ -5,7 +5,7 @@
 <h1 align="center">Walkie Talkie AAC</h1>
 
 <p align="center">
-  A free, co-designed AAC app that turns an iPhone into a wearable sign for face-to-face conversation.
+  A free, co-designed AAC app that turns an iPhone into a display to support everyday face-to-face conversation.
 </p>
 
 <p align="center">
@@ -21,6 +21,16 @@
 
 Built from the CHI 2024 paper [_Breaking Badge_](https://dl.acm.org/doi/10.1145/3613904.3642327) (Curtis, Lau and Neate), co-designed with people with aphasia in workshops run with [Aphasia Re-Connect](https://aphasiareconnect.org).
 
+## Co-designed for real conversations
+
+The app grew from participatory design workshops with people with aphasia and other communication needs, in partnership with [Aphasia Re-Connect](https://aphasiareconnect.org). The design turns an iPhone into a wearable sign: readable at a glance, immediately available, and able to complement gesture, eye contact and other forms of expression.
+
+The research behind the project is described in:
+
+> Humphrey Curtis, Lau, and Neate. 2024.  
+> [*Breaking Badge: Augmentative Communication with Wearable Badges*](https://dl.acm.org/doi/10.1145/3613904.3642327).  
+> In the CHI Conference on Human Factors in Computing Systems (CHI '24).
+
 ## What it does
 
 - Displays short messages outward in large, readable type — the phone hangs on a lanyard so the person you are talking to can read it.
@@ -31,7 +41,7 @@ Built from the CHI 2024 paper [_Breaking Badge_](https://dl.acm.org/doi/10.1145/
 - Looks things up in pictures, maps, dictionary, Wikipedia and video mid-conversation.
 - Provides tappable sentences that explain aphasia, so you do not have to.
 
-Badges are rotated 180° by default — the phone hangs facing away from you, so "the right way up" is upside down from where you are standing.
+- Badges are rotated 180° by default — the phone hangs facing away from you, so "the right way up" is upside down from where you are standing.
 
 ## Writing badges with AI
 
