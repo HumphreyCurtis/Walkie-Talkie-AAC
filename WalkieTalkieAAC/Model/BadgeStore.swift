@@ -25,7 +25,7 @@ final class BadgeStore {
     /// Existing installs then receive them once, without their own edits
     /// being touched and without re-adding anything they deliberately
     /// deleted more than once.
-    private static let currentSeedVersion = 3
+    private static let currentSeedVersion = 4
 
     private struct Snapshot: Codable {
         var badges: [Badge]
@@ -80,11 +80,31 @@ final class BadgeStore {
     private func applyNewSeedsIfNeeded() {
         guard seedVersion < Self.currentSeedVersion else { return }
 
+        // Retire starting badges that are no longer shipped.
+        //
+        // Seeding otherwise only ever adds, so anyone who installed before the
+        // set was trimmed keeps all 29 for good — a wall of cards they never
+        // chose, on the screen they use most.
+        //
+        // Matched on label *and* message together, so only untouched seed data
+        // goes. Edit a retired badge, even slightly, and it is yours: it stays.
+        if seedVersion < 4 {
+            let retired = Set(BadgeLibrary.retiredDefaults.map { "\($0.0)|\($0.1)" })
+            badges.removeAll { retired.contains("\($0.label)|\($0.displayText)") }
+        }
+
         let existing = Set(badges.map { $0.label.lowercased() })
         let additions = ([BadgeLibrary.sunflower] + BadgeLibrary.multilingualExamples)
             .filter { !existing.contains($0.label.lowercased()) }
 
         badges.append(contentsOf: additions)
+
+        // Never leave someone with nothing. If they had deleted most of the
+        // starting set already, retiring the rest could empty the list.
+        if badges.isEmpty {
+            badges = BadgeLibrary.defaults + [BadgeLibrary.sunflower] + BadgeLibrary.multilingualExamples
+        }
+
         seedVersion = Self.currentSeedVersion
         save()
     }

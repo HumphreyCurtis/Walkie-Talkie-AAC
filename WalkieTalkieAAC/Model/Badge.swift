@@ -187,6 +187,33 @@ enum BadgeLibrary {
         )
     ]
 
+    /// Starting badges that used to ship and no longer do, as
+    /// (label, message) pairs.
+    ///
+    /// Kept verbatim so an install made before the set was trimmed can drop
+    /// them. A badge only matches if both its label and its message are
+    /// untouched, so anything the user edited or wrote themselves survives.
+    static let retiredDefaults: [(String, String)] = [
+        ("Sad", "I feel sad today."),
+        ("Happy", "I am happy!"),
+        ("Hungry", "I am hungry. Can I have something to eat please?"),
+        ("Tired", "I am tired. I need a rest."),
+        ("Scared", "I am scared. Please stay with me."),
+        ("Calm", "Please stay calm. Everything will be okay."),
+        ("Medicine", "I need my medicine please."),
+        ("Cold", "I am cold. Can I have a blanket please?"),
+        ("Hot", "I am too hot. Can you open a window please?"),
+        ("Stop", "Please stop. I need a break."),
+        ("Love", "I love you."),
+        ("Sorry", "I am sorry."),
+        ("Yes", "Yes please."),
+        ("No", "No thank you."),
+        ("Hurt", "I hurt myself. Help me please."),
+        // The second of two Toilet entries that shipped by mistake.
+        ("Toilet", "I need the toilet please."),
+        ("Metro", "¿Dónde está el metro, por favor?"),
+    ]
+
     static let sunflower = Badge(
         label: "Sunflower",
         displayText: "Please be patient with me.",
