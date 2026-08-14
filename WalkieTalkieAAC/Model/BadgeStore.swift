@@ -102,6 +102,15 @@ final class BadgeStore {
         save()
     }
 
+    /// Deletes one badge by identity rather than by row offset.
+    ///
+    /// Swipe actions know the badge, not its index, and looking the index up
+    /// at the call site goes wrong the moment the list is filtered or sorted.
+    func delete(_ badge: Badge) {
+        guard let index = badges.firstIndex(where: { $0.id == badge.id }) else { return }
+        delete(at: IndexSet(integer: index))
+    }
+
     func delete(at offsets: IndexSet) {
         // Take the photos with them, or the directory grows forever with
         // files nothing references.

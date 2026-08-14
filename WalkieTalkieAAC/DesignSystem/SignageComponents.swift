@@ -301,10 +301,17 @@ extension View {
 
 private struct SignageRowStyle: ViewModifier {
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.editMode) private var editMode
 
     func body(content: Content) -> some View {
-        content
-            .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 16))
+        // A zero leading inset leaves no room for the red minus control that
+        // appears in edit mode, which silently hides delete. The inset opens
+        // up only while editing, so the plate still sits flush the rest of
+        // the time.
+        let leading: CGFloat = editMode?.wrappedValue.isEditing == true ? 12 : 0
+
+        return content
+            .listRowInsets(EdgeInsets(top: 4, leading: leading, bottom: 4, trailing: 16))
             .listRowSeparator(.hidden)
             .listRowBackground(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)

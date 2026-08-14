@@ -15,7 +15,18 @@ struct BadgesView: View {
     @State private var showingImport = false
     @State private var showingJSON = false
     @State private var editingBadge: Badge?
+    @State private var badgeToDelete: Badge?
     @State private var editMode: EditMode = .inactive
+
+    private func row(for badge: Badge) -> some View {
+        SignageRow(
+            title: badge.label,
+            subtitle: badge.displayText,
+            systemIcon: badge.systemIcon,
+            emoji: badge.emoji,
+            tint: BadgeColor.sign(named: badge.colorName)
+        )
+    }
 
     var body: some View {
         List {
@@ -27,7 +38,7 @@ struct BadgesView: View {
                         tint: SignagePalette.motorway
                     )
 
-                    Text("Swipe left to edit  •  Swipe right to speak")
+                    Text("Swipe right to delete  •  Swipe left to edit or speak")
                         .font(.appCaption)
                         .foregroundStyle(SignagePalette.concrete.color)
                         .padding(.bottom, 3)
@@ -36,36 +47,53 @@ struct BadgesView: View {
                 .signageHeaderRow()
 
                 ForEach(store.badges) { badge in
-                    NavigationLink {
-                        DisplayView(badge: badge)
-                    } label: {
-                        SignageRow(
-                            title: badge.label,
-                            subtitle: badge.displayText,
-                            systemIcon: badge.systemIcon,
-                            emoji: badge.emoji,
-                            tint: BadgeColor.sign(named: badge.colorName)
-                        )
+                    Group {
+                        if editMode.isEditing {
+                            // In edit mode a tap opens the editor rather than
+                            // the outward display — that is what someone who
+                            // just pressed "Edit" is trying to do.
+                            Button {
+                                editingBadge = badge
+                            } label: {
+                                row(for: badge)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            NavigationLink {
+                                DisplayView(badge: badge)
+                            } label: {
+                                row(for: badge)
+                            }
+                        }
                     }
                     .signageRowStyle()
-                    // Speaking is the action most likely to be wanted in a
-                    // hurry, so it sits on the leading swipe where it can be
-                    // reached without opening anything.
-                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                    // Delete sits on the leading swipe. `allowsFullSwipe` is
+                    // off so a fast swipe cannot delete outright: there is no
+                    // undo, these are messages the user wrote themselves, and
+                    // several co-designers were operating the phone
+                    // one-handed.
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
                         Button {
-                            Speaker.shared.speak(badge.displayText, languageCode: badge.languageCode)
+                            badgeToDelete = badge
                         } label: {
-                            Label("Speak", systemImage: "speaker.wave.2.fill")
+                            Label("Delete", systemImage: "trash.fill")
                         }
-                        .tint(SignagePalette.motorway.color)
+                        .tint(SignagePalette.signalRed.color)
                     }
-                    .swipeActions(edge: .trailing) {
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button {
                             editingBadge = badge
                         } label: {
                             Label("Edit", systemImage: "pencil")
                         }
                         .tint(SignagePalette.concrete.color)
+
+                        Button {
+                            Speaker.shared.speak(badge.displayText, languageCode: badge.languageCode)
+                        } label: {
+                            Label("Speak", systemImage: "speaker.wave.2.fill")
+                        }
+                        .tint(SignagePalette.motorway.color)
                     }
                 }
                 .onDelete { store.delete(at: $0) }
@@ -125,12 +153,32 @@ struct BadgesView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button(editMode.isEditing ? "Done" : "Reorder") {
+                // "Edit" rather than "Reorder": the mode now also opens a
+                // badge for editing on tap, alongside reordering and delete.
+                Button(editMode.isEditing ? "Done" : "Edit") {
                     withAnimation {
                         editMode = editMode.isEditing ? .inactive : .active
                     }
                 }
             }
+        }
+        // Deleting is irreversible and the text is the user's own, so it
+        // confirms and names the badge rather than vanishing on a swipe.
+        .confirmationDialog(
+            badgeToDelete.map { "Delete “\($0.label)”?" } ?? "Delete badge?",
+            isPresented: Binding(
+                get: { badgeToDelete != nil },
+                set: { if !$0 { badgeToDelete = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                if let badgeToDelete { store.delete(badgeToDelete) }
+                badgeToDelete = nil
+            }
+            Button("Keep", role: .cancel) { badgeToDelete = nil }
+        } message: {
+            Text(badgeToDelete?.displayText ?? "")
         }
         .sheet(isPresented: $showingNewBadge) {
             NavigationStack { BadgeEditorView(badge: nil) }
