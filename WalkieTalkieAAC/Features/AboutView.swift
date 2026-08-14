@@ -53,6 +53,36 @@ struct AboutView: View {
             }
 
             Section {
+                PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
+                    .signageHeaderRow()
+
+                Link(destination: AppLinks.donate) {
+                    SignageRow(
+                        title: "Donate to Aphasia Re-Connect",
+                        subtitle: "The charity this was designed with",
+                        systemIcon: "heart.circle.fill",
+                        tint: SignagePalette.signalRed
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+
+                Link(destination: AppLinks.sponsor) {
+                    SignageRow(
+                        title: "Sponsor development",
+                        subtitle: "Help keep the app going",
+                        systemIcon: "heart.fill",
+                        tint: SignagePalette.diversion
+                    )
+                }
+                .buttonStyle(.plain)
+                .signageRowStyle()
+            } footer: {
+                Text("The app is free and always will be. Aphasia Re-Connect is UK registered charity \(AppLinks.charityNumber).")
+                    .signageFooter()
+            }
+
+            Section {
                 PlatformHeader(
                     text: "How it was designed",
                     systemIcon: "person.3.fill",
@@ -89,36 +119,6 @@ struct AboutView: View {
                 .signageRowStyle()
             } footer: {
                 Text("From paper ideas to wearable prototypes, each stage was shaped through making, trying and discussing together.")
-                    .signageFooter()
-            }
-
-            Section {
-                PlatformHeader(text: "Support", systemIcon: "hands.clap.fill", tint: tint)
-                    .signageHeaderRow()
-
-                Link(destination: AppLinks.donate) {
-                    SignageRow(
-                        title: "Donate to Aphasia Re-Connect",
-                        subtitle: "The charity this was designed with",
-                        systemIcon: "heart.circle.fill",
-                        tint: SignagePalette.signalRed
-                    )
-                }
-                .buttonStyle(.plain)
-                .signageRowStyle()
-
-                Link(destination: AppLinks.sponsor) {
-                    SignageRow(
-                        title: "Sponsor development",
-                        subtitle: "Help keep the app going",
-                        systemIcon: "heart.fill",
-                        tint: SignagePalette.diversion
-                    )
-                }
-                .buttonStyle(.plain)
-                .signageRowStyle()
-            } footer: {
-                Text("The app is free and always will be. Aphasia Re-Connect is UK registered charity \(AppLinks.charityNumber).")
                     .signageFooter()
             }
 

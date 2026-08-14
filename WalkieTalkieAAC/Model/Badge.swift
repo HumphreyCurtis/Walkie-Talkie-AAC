@@ -126,12 +126,6 @@ enum BadgeLibrary {
             colorName: "green"
         ),
         Badge(
-            label: "Seat",
-            displayText: "Could you please let me have your seat? Many thanks!",
-            systemIcon: "chair.fill",
-            colorName: "amber"
-        ),
-        Badge(
             label: "Time",
             displayText: "Please give me time to speak.",
             systemIcon: "clock.fill",
@@ -144,16 +138,16 @@ enum BadgeLibrary {
             colorName: "teal"
         ),
         Badge(
+            label: "Seat",
+            displayText: "Could you please let me have your seat? Many thanks!",
+            systemIcon: "chair.fill",
+            colorName: "amber"
+        ),
+        Badge(
             label: "Disability",
             displayText: "I have an invisible disability.",
             systemIcon: "figure.roll",
             colorName: "brown"
-        ),
-        Badge(
-            label: "Toilet",
-            displayText: "Where is the toilet please?",
-            systemIcon: "toilet.fill",
-            colorName: "orange"
         ),
         Badge(
             label: "Thanks",
@@ -162,22 +156,10 @@ enum BadgeLibrary {
             colorName: "green"
         ),
         Badge(
-            label: "In Pain",
-            displayText: "I am in pain. Please help me.",
-            systemIcon: "heart.circle.fill",
-            colorName: "red"
-        ),
-        Badge(
-            label: "Sad",
-            displayText: "I feel sad today.",
-            systemIcon: "cloud.rain.fill",
-            colorName: "blue"
-        ),
-        Badge(
-            label: "Happy",
-            displayText: "I am happy!",
-            systemIcon: "sun.max.fill",
-            colorName: "green"
+            label: "Toilet",
+            displayText: "Where is the toilet please?",
+            systemIcon: "toilet.fill",
+            colorName: "orange"
         ),
         Badge(
             label: "Water",
@@ -186,33 +168,9 @@ enum BadgeLibrary {
             colorName: "blue"
         ),
         Badge(
-            label: "Hungry",
-            displayText: "I am hungry. Can I have something to eat please?",
-            systemIcon: "fork.knife",
-            colorName: "amber"
-        ),
-        Badge(
-            label: "Tired",
-            displayText: "I am tired. I need a rest.",
-            systemIcon: "bed.double.fill",
-            colorName: "purple"
-        ),
-        Badge(
-            label: "Scared",
-            displayText: "I am scared. Please stay with me.",
-            systemIcon: "exclamationmark.bubble.fill",
-            colorName: "orange"
-        ),
-        Badge(
-            label: "Calm",
-            displayText: "Please stay calm. Everything will be okay.",
-            systemIcon: "leaf.fill",
-            colorName: "green"
-        ),
-        Badge(
-            label: "Medicine",
-            displayText: "I need my medicine please.",
-            systemIcon: "cross.case.fill",
+            label: "In Pain",
+            displayText: "I am in pain. Please help me.",
+            systemIcon: "heart.circle.fill",
             colorName: "red"
         ),
         Badge(
@@ -226,61 +184,7 @@ enum BadgeLibrary {
             displayText: "I want to go home please.",
             systemIcon: "house.fill",
             colorName: "green"
-        ),
-        Badge(
-            label: "Cold",
-            displayText: "I am cold. Can I have a blanket please?",
-            systemIcon: "thermometer.snowflake",
-            colorName: "blue"
-        ),
-        Badge(
-            label: "Hot",
-            displayText: "I am too hot. Can you open a window please?",
-            systemIcon: "thermometer.sun.fill",
-            colorName: "orange"
-        ),
-        Badge(
-            label: "Toilet",
-            displayText: "I need the toilet please.",
-            systemIcon: "toilet.fill",
-            colorName: "teal"
-        ),
-        Badge(
-            label: "Stop",
-            displayText: "Please stop. I need a break.",
-            systemIcon: "hand.raised.fill",
-            colorName: "red"
-        ),
-        Badge(
-            label: "Love",
-            displayText: "I love you.",
-            systemIcon: "heart.fill",
-            colorName: "red"
-        ),
-        Badge(
-            label: "Sorry",
-            displayText: "I am sorry.",
-            systemIcon: "figure.wave",
-            colorName: "blue"
-        ),
-        Badge(
-            label: "Yes",
-            displayText: "Yes please.",
-            systemIcon: "hand.thumbsup.fill",
-            colorName: "green"
-        ),
-        Badge(
-            label: "No",
-            displayText: "No thank you.",
-            systemIcon: "hand.thumbsdown.fill",
-            colorName: "red"
-        ),
-        Badge(
-            label: "Hurt",
-            displayText: "I hurt myself. Help me please.",
-            systemIcon: "bandage.fill",
-            colorName: "red"
-        ),
+        )
     ]
 
     static let sunflower = Badge(
@@ -301,14 +205,6 @@ enum BadgeLibrary {
             emoji: "🇫🇷",
             colorName: "blue",
             languageCode: "fr-FR"
-        ),
-        Badge(
-            label: "Metro",
-            displayText: "¿Dónde está el metro, por favor?",
-            systemIcon: "tram.fill",
-            emoji: "🇪🇸",
-            colorName: "red",
-            languageCode: "es-ES"
         ),
     ]
 }
