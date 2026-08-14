@@ -2,7 +2,16 @@
 
 _Last updated: 2 August 2026_
 
-Walkie Talkie AAC does not collect, store or transmit any personal information.
+**Walkie Talkie AAC collects no data.**
+
+There is no tracking, no analytics, no advertising and no third-party code of
+any kind. The app has no servers to send anything to.
+
+The messages you write are yours and they stay on your phone. Nobody else — the
+developer included — can see them, because there is nowhere for them to go.
+
+The app is open source, so every claim on this page can be checked:
+<https://github.com/HumphreyCurtis/Walkie-Talkie-AAC>.
 
 ## No account, no server
 
